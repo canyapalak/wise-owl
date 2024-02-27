@@ -3,6 +3,11 @@ export interface WelcomeButtonsProps {
   openInfo: () => void;
 }
 
+export interface CategoriesProps {
+  closeCategories: () => void;
+  openEndlessQuiz: () => void;
+}
+
 export interface Category {
   id: number;
   title: string;

@@ -12,11 +12,11 @@ const config: Config = {
         transparent: "transparent",
         brick: {
           default: "#EB4813",
-          light: "#e85e30",
+          light: "#F15927",
         },
-        navy: {
-          default: "#2676BC",
-          light: "#3189D5",
+        gray: {
+          default: "#7B7B74",
+          light: "#8A8A83",
         },
       },
     },
