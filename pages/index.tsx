@@ -1,26 +1,37 @@
+import Categories from "@/app/components/Categories";
+import Info from "@/app/components/Info";
+import WelcomeButtons from "@/app/components/WelcomeButtons";
+import { useState } from "react";
+
 export default function Home() {
+  const [isInfo, setIsInfo] = useState(false);
+  const [isCategories, setIsCategories] = useState(false);
+
+  const openInfo = (): void => {
+    setIsInfo(true);
+  };
+
+  const closeInfo = (): void => {
+    setIsInfo(false);
+  };
+
+  const openCategories = (): void => {
+    setIsCategories(true);
+  };
+
+  const closeCategories = (): void => {
+    setIsCategories(false);
+  };
+
   return (
     <div>
-      <div className="flex flex-col gap-4 items-center">
-        <div
-          className="button-prm bg-brick-default text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer hover:bg-brick-light w-48 text-center"
-        >
-          Competition
-        </div>
-        <div
-          className="button-prm bg-brick-default text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer hover:bg-brick-light w-48 text-center"
-        >
-          Endless Quiz
-        </div>
-        <div
-          className="button-prm bg-brick-default text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer hover:bg-brick-light w-48 text-center"
-        >
-          What's This?
-        </div>
-      </div>
+      {isInfo && !isCategories && <Info closeInfo={closeInfo} />}
+      {!isInfo && isCategories && (
+        <Categories closeCategories={closeCategories} />
+      )}
+      {!isInfo && !isCategories && (
+        <WelcomeButtons openCategories={openCategories} openInfo={openInfo} />
+      )}
     </div>
   );
 }

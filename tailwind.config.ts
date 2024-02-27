@@ -14,7 +14,10 @@ const config: Config = {
           default: "#EB4813",
           light: "#e85e30",
         },
-        bluegray: "#b3cbe6",
+        navy: {
+          default: "#2676BC",
+          light: "#3189D5",
+        },
       },
     },
   },

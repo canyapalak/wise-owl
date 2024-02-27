@@ -3,6 +3,7 @@ import "@/app/globals.css";
 import Head from "next/head";
 import Header from "@/app/components/Header";
 import localFont from "next/font/local";
+import { CategoryProvider } from "@/app/context/CategoryContext";
 
 const righteous = localFont({
   src: "../public/fonts/Righteous-Regular.otf",
@@ -23,9 +24,11 @@ export default function MyApp({ Component, pageProps }: any) {
         <Header />
         <div
           className="ml-auto mr-auto border-dashed 
-      border-spacing-20 border-4 border-bluegray rounded-xl py-8 px-4 w-10/12 md:w-3/4 h-72"
+      border-spacing-20 border-4 border-neutral-600 rounded-xl py-8 px-4 w-10/12 md:w-3/4 bg-white"
         >
-          <Component {...pageProps} />
+          <CategoryProvider>
+            <Component {...pageProps} />
+          </CategoryProvider>
         </div>
       </main>
     </>
