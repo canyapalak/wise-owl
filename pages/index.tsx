@@ -39,7 +39,10 @@ export default function Home() {
         <Info closeInfo={closeInfo} />
       )}
       {!isInfo && !isCategories && isEndlessQuiz && (
-        <EndlessQuiz closeEndlessQuiz={closeEndlessQuiz} />
+        <EndlessQuiz
+          closeEndlessQuiz={closeEndlessQuiz}
+          openEndlessQuiz={openEndlessQuiz}
+        />
       )}
       {!isInfo && isCategories && !isEndlessQuiz && (
         <Categories

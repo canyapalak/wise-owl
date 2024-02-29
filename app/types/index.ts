@@ -8,6 +8,11 @@ export interface CategoriesProps {
   openEndlessQuiz: () => void;
 }
 
+export interface EndlessQuizProps {
+  closeEndlessQuiz: () => void;
+  openEndlessQuiz: () => void;
+}
+
 export interface Category {
   id: number;
   title: string;
