@@ -27,12 +27,12 @@ export default function Categories({
     {
       id: 4,
       title: "Literature",
-      keyword: "literature",
+      keyword: "literature, books and writers",
     },
     {
       id: 5,
       title: "Sports",
-      keyword: "sports",
+      keyword: "sports, famous players and sport clubs",
     },
     {
       id: 6,
@@ -42,7 +42,7 @@ export default function Categories({
     {
       id: 7,
       title: "Travel",
-      keyword: "travel/tourism",
+      keyword: "travel and tourism",
     },
     {
       id: 8,

@@ -20,6 +20,19 @@ export interface Category {
 }
 
 export interface CategoryProviderProps {
-  pickedCategory: any;
-  setPickedCategory: any;
+  pickedCategory: string | null;
+  setPickedCategory: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+export interface formattedQuestion {
+  question: string;
+  options: {
+    A?: string;
+    B?: string;
+    C?: string;
+    D?: string;
+  };
+  correctAnswer: {
+    answer: string;
+  };
 }

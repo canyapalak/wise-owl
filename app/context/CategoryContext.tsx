@@ -6,7 +6,7 @@ export const CategoryContext = createContext<CategoryProviderProps | any>(
 );
 
 export const CategoryProvider = ({ children }: { children: ReactNode }) => {
-  const [pickedCategory, setPickedCategory] = useState<any>(undefined);
+  const [pickedCategory, setPickedCategory] = useState<string | null>(null);
 
   const contextValue: CategoryProviderProps = {
     pickedCategory,
