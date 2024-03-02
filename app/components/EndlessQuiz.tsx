@@ -11,20 +11,26 @@ export default function EndlessQuiz({
   const pickedCategory = useContext(CategoryContext);
   const [generatedQuestion, setGeneratedQuestion] =
     useState<formattedQuestion | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   useEffect(() => {
+    setIsCorrect(null);
     const fetchData = async () => {
       if (pickedCategory) {
         await generateQuestion(pickedCategory);
-        console.log("generatedQuestion :>> ", generatedQuestion);
-        console.log("pickedCategory", pickedCategory);
       }
     };
 
     fetchData();
   }, [pickedCategory]);
 
-  console.log("pickedCategory", pickedCategory);
+  const handleOptionClick = (optValue: string) => {
+    setSelectedOption(optValue);
+    setIsCorrect(optValue === String(generatedQuestion?.correctOption));
+  };
+
+  console.log("pickedCategory", pickedCategory.pickedCategory);
 
   const generateQuestion = async (pickedCategoryObject: {
     pickedCategory: string;
@@ -70,25 +76,17 @@ export default function EndlessQuiz({
         max_tokens: 200,
       }),
     };
-    console.log("Request options:", requestOptions);
-    console.log("Request URL:", apiUrl);
-    console.log("Request Options:", requestOptions);
 
     try {
       const response = await fetch(apiUrl, requestOptions);
       console.log("Response status:", response.status);
 
       const responseData = await response.json();
-      console.log("responseData :>> ", responseData);
-      const generatedMessage = responseData.choices[0]?.message?.content;
-      const formattedQuestion = formatQuestion(
-        responseData.choices[0].message.content
-      );
-
-      console.log("generatedMessage :>> ", generatedMessage);
+      const questionContent = responseData.choices[0].message.content;
+      console.log("questionContent :>> ", questionContent);
+      const formattedQuestion = formatQuestion(questionContent);
 
       setGeneratedQuestion(formattedQuestion);
-      console.log("generatedQuestion :>> ", generatedMessage);
     } catch (error) {
       console.error("Error fetching data:", error);
       throw error;
@@ -96,23 +94,41 @@ export default function EndlessQuiz({
   };
 
   console.log("generatedQuestion :>> ", generatedQuestion);
+  console.log("isCorrect", isCorrect);
+  console.log("selectedOption :>> ", selectedOption);
 
   return (
     <div className="flex flex-col gap-8 items-center">
-      <div>
+      <div className="text-center">
         {generatedQuestion ? (
-          <div>
+          <div className="flex flex-wrap flex-col items-center">
             <span>{generatedQuestion.question}</span>
-            <div className="flex flex-wrap gap-4 justify-center">
-              {Object.entries(generatedQuestion.options).map(
-                ([optKey, optValue]) => (
-                  <div
-                    key={optKey}
-                    className="button-prm bg-brick-default text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer hover:bg-brick-light w-40 text-center"
-                  >{`${optKey}: ${optValue}`}</div>
-                )
-              )}
+            <div className="flex flex-wrap gap-4 justify-center flex-col items-center mt-8">
+              {generatedQuestion.options.map((optValue, index) => (
+                <div
+                  key={index}
+                  className={`${
+                    selectedOption === null && isCorrect === null
+                      ? "bg-mustard-default"
+                      : selectedOption === optValue
+                      ? isCorrect
+                        ? "bg-green-default"
+                        : "bg-red-default"
+                      : "bg-mustard-default"
+                  } ${
+                    selectedOption === null && isCorrect === null
+                      ? "hover:bg-mustard-light"
+                      : selectedOption === optValue
+                      ? isCorrect
+                        ? "hover:bg-green-default"
+                        : "hover:bg-red-default"
+                      : "hover:bg-mustard-light"
+                  } text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-64 text-center shadow-lg shadow-zinc-400`}
+                  onClick={() => handleOptionClick(optValue)}
+                >
+                  {`${optValue}`}
+                </div>
+              ))}
             </div>
           </div>
         ) : (
@@ -124,8 +140,8 @@ export default function EndlessQuiz({
         )}
       </div>
       <div
-        className="button-prm bg-gray-default text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer hover:bg-gray-light w-48 text-center"
+        className="button-prm bg-gray-default hover:bg-gray-light  text-neutral-50 text-2xl rounded-md p-3
+          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
         onClick={closeEndlessQuiz}
       >
         Home

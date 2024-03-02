@@ -40,7 +40,7 @@ background-color: ghostwhite ;
 
 @keyframes dot {
   0% {
-    background-color: #7B7B74;
+    background-color: #EB4813;
     transform: scale(1);
   }
 
@@ -50,7 +50,7 @@ background-color: ghostwhite ;
   }
 
   100% {
-    background-color: #7B7B74;
+    background-color: #EB4813;
     transform: scale(1);
   }
 }

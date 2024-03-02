@@ -8,7 +8,7 @@ export default function Info({ closeInfo }: { closeInfo: () => void }) {
       </p>
       <div
         className="button-prm bg-gray-default text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer hover:bg-gray-light w-48 text-center"
+          cursor-pointer hover:bg-gray-light w-48 text-center shadow-lg shadow-zinc-400"
         onClick={closeInfo}
       >
         Back

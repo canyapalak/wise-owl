@@ -63,8 +63,8 @@ export default function Categories({
         {CategoryArray.map((cat) => (
           <div
             key={cat.id}
-            className="button-prm bg-brick-default text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer hover:bg-brick-light w-40 text-center"
+            className="button-prm bg-navy-default hover:bg-navy-light text-neutral-50 text-2xl rounded-md p-3
+          cursor-pointer w-40 text-center shadow-lg shadow-zinc-400"
             onClick={() => handleCategoryClick(cat.keyword)}
           >
             {cat.title}
@@ -72,8 +72,8 @@ export default function Categories({
         ))}
       </div>
       <div
-        className="button-prm bg-gray-default text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer hover:bg-gray-light w-48 text-center"
+        className="button-prm bg-gray-default hover:bg-gray-light text-neutral-50 text-2xl rounded-md p-3
+          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
         onClick={closeCategories}
       >
         Back

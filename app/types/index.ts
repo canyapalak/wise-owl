@@ -26,13 +26,6 @@ export interface CategoryProviderProps {
 
 export interface formattedQuestion {
   question: string;
-  options: {
-    A?: string;
-    B?: string;
-    C?: string;
-    D?: string;
-  };
-  correctAnswer: {
-    answer: string;
-  };
+  options: string[];
+  correctOption: string;
 }
