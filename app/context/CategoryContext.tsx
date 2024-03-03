@@ -13,8 +13,6 @@ export const CategoryProvider = ({ children }: { children: ReactNode }) => {
     setPickedCategory,
   };
 
-  console.log("pickedCategory", pickedCategory);
-
   return (
     <CategoryContext.Provider value={contextValue}>
       {children}

@@ -2,14 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Righteous';
+  src: url('../public/fonts/Righteous-Regular.otf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
 background-color: ghostwhite ;
+font-family: "Righteous";
 }
 
 .button-prm:hover {
   -webkit-transform: translateY(-1px);
   transform: rotate(-2deg);
   transition: 0.20s;
+}
+
+.modal-main {
+  font-family: "Righteous";
+}
+
+.modal-box {
+  background-color: ghostwhite;
+}
+
+.modal-dash {
+  background-color: white;
 }
 
 .loading {
@@ -22,7 +43,7 @@ background-color: ghostwhite ;
 
 .loading-dot {
   animation: dot ease-in-out 1s infinite;
-  background-color: grey;
+  background-color: #8A8A83;
   display: inline-block;
   height: 15px;
   margin: 10px;
@@ -40,17 +61,17 @@ background-color: ghostwhite ;
 
 @keyframes dot {
   0% {
-    background-color: #EB4813;
+    background-color: #ac3973;
     transform: scale(1);
   }
 
   50% {
-    background-color: #F15927;
+    background-color: #669900;
     transform: scale(1.3);
   }
 
   100% {
-    background-color: #EB4813;
+    background-color: #cc8800;
     transform: scale(1);
   }
 }

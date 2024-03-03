@@ -29,3 +29,8 @@ export interface formattedQuestion {
   options: string[];
   correctOption: string;
 }
+
+export interface ModalInterface {
+  open: boolean;
+  setOpen: (bool: boolean) => void;
+}

@@ -21,27 +21,30 @@ export default function EndlessQuiz({
     setIsCorrect(null);
     const fetchData = async () => {
       if (pickedCategory) {
-        setLoading(true); // Set loading to true when starting to fetch a question
+        setLoading(true);
         try {
           await generateQuestion(pickedCategory);
         } finally {
-          setLoading(false); // Set loading to false after fetching is completed (success or error)
+          setLoading(false);
         }
       }
     };
 
     fetchData();
-  }, [pickedCategory]);
+  }, []);
 
   console.log("loading :>> ", loading);
 
   const handleOptionClick = (optValue: string) => {
-    setSelectedOption(optValue);
-    setIsCorrect(optValue === String(generatedQuestion?.correctOption));
+    if (selectedOption === null) {
+      setSelectedOption(optValue);
+      setIsCorrect(optValue === String(generatedQuestion?.correctOption));
+    }
   };
 
-  const handleInvalidQuestion = async () => {
+  const handleNewQuestion = async () => {
     setLoading(true);
+    setSelectedOption(null);
     await generateQuestion(pickedCategory);
     setLoading(false);
   };
@@ -114,10 +117,10 @@ export default function EndlessQuiz({
   console.log("selectedOption :>> ", selectedOption);
 
   return (
-    <div className="flex flex-col gap-4 items-center">
+    <div className="flex flex-col gap-2 items-center">
       <div className="text-center">
         {loading ? (
-          <div className="loading">
+          <div className="loading mb-6">
             <span className="loading-dot"></span>
             <span className="loading-dot"></span>
             <span className="loading-dot"></span>
@@ -125,8 +128,28 @@ export default function EndlessQuiz({
         ) : (
           generatedQuestion && (
             <div className="flex flex-wrap flex-col items-center">
-              <span className="mb-6">{generatedQuestion.question}</span>
-              <div className="flex flex-wrap gap-4 justify-center flex-col items-center">
+              <span className="">{generatedQuestion.question}</span>
+              {selectedOption !== null && (
+                <div>
+                  {isCorrect ? (
+                    <div className="text-xl mt-4 text-green-default">
+                      You nailed it! Congratulations!
+                    </div>
+                  ) : (
+                    <div className="text-xl mt-4 text-red-default">
+                      Oops! Correct answer was{" "}
+                      {generatedQuestion?.correctOption}.
+                    </div>
+                  )}
+                </div>
+              )}
+              <div
+                className={`flex flex-wrap gap-4 justify-center flex-col items-center mb-6 ${
+                  generatedQuestion?.question === "AI is confused :/"
+                    ? "mt-2"
+                    : "mt-6"
+                }`}
+              >
                 {generatedQuestion.options.map((optValue, index) => (
                   <div
                     key={index}
@@ -139,30 +162,41 @@ export default function EndlessQuiz({
                           : "bg-red-default"
                         : "bg-mustard-default"
                     } ${
-                      selectedOption === null && isCorrect === null
+                      selectedOption === null
                         ? "hover:bg-mustard-light"
                         : selectedOption === optValue
                         ? isCorrect
                           ? "hover:bg-green-default"
                           : "hover:bg-red-default"
-                        : "hover:bg-mustard-light"
-                    } text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-64 text-center shadow-lg shadow-zinc-400`}
+                        : ""
+                    } text-neutral-50 text-2xl rounded-md p-3 ${
+                      selectedOption === null && "cursor-pointer"
+                    } w-64 text-center shadow-lg shadow-zinc-400`}
                     onClick={() => handleOptionClick(optValue)}
                   >
                     {`${optValue}`}
                   </div>
                 ))}
               </div>
+              {selectedOption &&
+                generatedQuestion?.question !== "AI is confused :/" && (
+                  <button
+                    className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
+                    onClick={handleNewQuestion}
+                  >
+                    Next
+                  </button>
+                )}
             </div>
           )
         )}
       </div>
       {!loading && generatedQuestion?.question === "AI is confused :/" && (
         <div className="items-center flex flex-col justify-normal">
-          <Image src={confused} alt="confused" className="w-24 mb-10" />
+          <Image src={confused} alt="confused" className="w-24 mb-12" />
           <button
-            className="button-prm bg-brick-default hover:bg-brick-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
-            onClick={handleInvalidQuestion}
+            className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
+            onClick={handleNewQuestion}
           >
             Ask Again
           </button>
@@ -170,7 +204,7 @@ export default function EndlessQuiz({
       )}
       <div
         className="button-prm bg-gray-default hover:bg-gray-light  text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-3"
+          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-1"
         onClick={closeEndlessQuiz}
       >
         Home

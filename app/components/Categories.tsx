@@ -59,6 +59,7 @@ export default function Categories({
 
   return (
     <div className="flex flex-col gap-6 items-center">
+      <p className="text-center text-neutral-700">Pick a category!</p>
       <div className="flex flex-wrap gap-4 justify-center">
         {CategoryArray.map((cat) => (
           <div
@@ -73,7 +74,7 @@ export default function Categories({
       </div>
       <div
         className="button-prm bg-gray-default hover:bg-gray-light text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
+          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-2"
         onClick={closeCategories}
       >
         Back

@@ -2,14 +2,17 @@ import "tailwindcss/tailwind.css";
 import "@/app/globals.css";
 import Head from "next/head";
 import Header from "@/app/components/Header";
-import localFont from "next/font/local";
 import { CategoryProvider } from "@/app/context/CategoryContext";
-
-const righteous = localFont({
-  src: "../public/fonts/Righteous-Regular.otf",
-});
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import { useState } from "react";
+import CreditsModal from "@/app/components/CreditsModal";
 
 export default function MyApp({ Component, pageProps }: any) {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpen(true);
+  };
   return (
     <>
       <Head>
@@ -17,10 +20,15 @@ export default function MyApp({ Component, pageProps }: any) {
         <link rel="icon" href="./favicon.ico" />
         <title>Wise Owl</title>
       </Head>
-      <p className={`text-sm m-2 ${righteous.className}`}>Version: 1.0</p>
-      <main
-        className={`flex flex-col min-h-screen w-10/12 md:w-3/4 mx-auto ${righteous.className}`}
-      >
+      <div className="flex flex-row gap-2">
+        <p className="text-sm m-2">Version: 1.0</p>
+        <HelpOutlineOutlinedIcon
+          className="w-5 mt-1.5 cursor-pointer hover:text-gray-default"
+          onClick={handleOpenModal}
+        />
+        {open ? <CreditsModal open={open} setOpen={setOpen} /> : null}
+      </div>
+      <main className={"flex flex-col min-h-screen w-10/12 md:w-3/4 mx-auto"}>
         <Header />
         <div
           className="ml-auto mr-auto border-dashed 

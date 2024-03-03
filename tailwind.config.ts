@@ -13,7 +13,7 @@ const config: Config = {
         transparent: "transparent",
         brick: {
           default: "#EB4813",
-          light: "#F15927",
+          light: "#f06e42",
         },
         gray: {
           default: "#7B7B74",
@@ -34,6 +34,10 @@ const config: Config = {
         green: {
           default: "#669900",
           light: "#77b300",
+        },
+        purple: {
+          default: "#ac3973",
+          light: "#c6538c",
         },
       },
     },
