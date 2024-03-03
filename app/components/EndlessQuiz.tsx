@@ -1,7 +1,9 @@
+import "@/app/globals.css";
 import { useContext, useEffect, useState } from "react";
 import { CategoryContext } from "../context/CategoryContext";
 import { EndlessQuizProps, formattedQuestion } from "../types";
-import "@/app/globals.css";
+import Image from "next/image";
+import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
 
 export default function EndlessQuiz({
@@ -13,21 +15,35 @@ export default function EndlessQuiz({
     useState<formattedQuestion | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setIsCorrect(null);
     const fetchData = async () => {
       if (pickedCategory) {
-        await generateQuestion(pickedCategory);
+        setLoading(true); // Set loading to true when starting to fetch a question
+        try {
+          await generateQuestion(pickedCategory);
+        } finally {
+          setLoading(false); // Set loading to false after fetching is completed (success or error)
+        }
       }
     };
 
     fetchData();
   }, [pickedCategory]);
 
+  console.log("loading :>> ", loading);
+
   const handleOptionClick = (optValue: string) => {
     setSelectedOption(optValue);
     setIsCorrect(optValue === String(generatedQuestion?.correctOption));
+  };
+
+  const handleInvalidQuestion = async () => {
+    setLoading(true);
+    await generateQuestion(pickedCategory);
+    setLoading(false);
   };
 
   console.log("pickedCategory", pickedCategory.pickedCategory);
@@ -98,50 +114,63 @@ export default function EndlessQuiz({
   console.log("selectedOption :>> ", selectedOption);
 
   return (
-    <div className="flex flex-col gap-8 items-center">
+    <div className="flex flex-col gap-4 items-center">
       <div className="text-center">
-        {generatedQuestion ? (
-          <div className="flex flex-wrap flex-col items-center">
-            <span>{generatedQuestion.question}</span>
-            <div className="flex flex-wrap gap-4 justify-center flex-col items-center mt-8">
-              {generatedQuestion.options.map((optValue, index) => (
-                <div
-                  key={index}
-                  className={`${
-                    selectedOption === null && isCorrect === null
-                      ? "bg-mustard-default"
-                      : selectedOption === optValue
-                      ? isCorrect
-                        ? "bg-green-default"
-                        : "bg-red-default"
-                      : "bg-mustard-default"
-                  } ${
-                    selectedOption === null && isCorrect === null
-                      ? "hover:bg-mustard-light"
-                      : selectedOption === optValue
-                      ? isCorrect
-                        ? "hover:bg-green-default"
-                        : "hover:bg-red-default"
-                      : "hover:bg-mustard-light"
-                  } text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-64 text-center shadow-lg shadow-zinc-400`}
-                  onClick={() => handleOptionClick(optValue)}
-                >
-                  {`${optValue}`}
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
+        {loading ? (
           <div className="loading">
             <span className="loading-dot"></span>
             <span className="loading-dot"></span>
             <span className="loading-dot"></span>
           </div>
+        ) : (
+          generatedQuestion && (
+            <div className="flex flex-wrap flex-col items-center">
+              <span className="mb-6">{generatedQuestion.question}</span>
+              <div className="flex flex-wrap gap-4 justify-center flex-col items-center">
+                {generatedQuestion.options.map((optValue, index) => (
+                  <div
+                    key={index}
+                    className={`${
+                      selectedOption === null && isCorrect === null
+                        ? "bg-mustard-default"
+                        : selectedOption === optValue
+                        ? isCorrect
+                          ? "bg-green-default"
+                          : "bg-red-default"
+                        : "bg-mustard-default"
+                    } ${
+                      selectedOption === null && isCorrect === null
+                        ? "hover:bg-mustard-light"
+                        : selectedOption === optValue
+                        ? isCorrect
+                          ? "hover:bg-green-default"
+                          : "hover:bg-red-default"
+                        : "hover:bg-mustard-light"
+                    } text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-64 text-center shadow-lg shadow-zinc-400`}
+                    onClick={() => handleOptionClick(optValue)}
+                  >
+                    {`${optValue}`}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
         )}
       </div>
+      {!loading && generatedQuestion?.question === "AI is confused :/" && (
+        <div className="items-center flex flex-col justify-normal">
+          <Image src={confused} alt="confused" className="w-24 mb-10" />
+          <button
+            className="button-prm bg-brick-default hover:bg-brick-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
+            onClick={handleInvalidQuestion}
+          >
+            Ask Again
+          </button>
+        </div>
+      )}
       <div
         className="button-prm bg-gray-default hover:bg-gray-light  text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
+          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-3"
         onClick={closeEndlessQuiz}
       >
         Home

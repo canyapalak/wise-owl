@@ -38,6 +38,20 @@ export function formatQuestion(generatedQuestion: string): formattedQuestion {
 
   const options = [optionA, optionB, optionC, optionD];
 
+  if (
+    question.length > 70 ||
+    optionA.length > 50 ||
+    optionB.length > 50 ||
+    optionC.length > 50 ||
+    optionD.length > 50
+  ) {
+    return {
+      question: "AI is confused :/",
+      options: [],
+      correctOption: "",
+    };
+  }
+
   return {
     question,
     options,
