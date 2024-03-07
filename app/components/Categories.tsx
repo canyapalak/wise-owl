@@ -5,8 +5,12 @@ import { CategoryContext } from "../context/CategoryContext";
 export default function Categories({
   closeCategories,
   openEndlessQuiz,
+  openContest,
+  isContestCategories,
 }: CategoriesProps) {
   const { setPickedCategory } = useContext(CategoryContext);
+
+  console.log("isContestCategories", isContestCategories);
 
   const CategoryArray: Category[] = [
     {
@@ -47,14 +51,20 @@ export default function Categories({
     {
       id: 8,
       title: "Everything!",
-      keyword: "everything",
+      keyword: "fun facts",
     },
   ];
 
-  const handleCategoryClick = (keyword: string) => {
+  const handleEndlessCategoryClick = (keyword: string) => {
     setPickedCategory(keyword);
     closeCategories();
     openEndlessQuiz();
+  };
+
+  const handleContestCategoryClick = (keyword: string) => {
+    setPickedCategory(keyword);
+    closeCategories();
+    openContest();
   };
 
   return (
@@ -66,7 +76,11 @@ export default function Categories({
             key={cat.id}
             className="button-prm bg-navy-default hover:bg-navy-light text-neutral-50 text-2xl rounded-md p-3
           cursor-pointer w-40 text-center shadow-lg shadow-zinc-400"
-            onClick={() => handleCategoryClick(cat.keyword)}
+            onClick={() =>
+              !isContestCategories
+                ? handleEndlessCategoryClick(cat.keyword)
+                : handleContestCategoryClick(cat.keyword)
+            }
           >
             {cat.title}
           </div>
@@ -77,7 +91,7 @@ export default function Categories({
           cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-2"
         onClick={closeCategories}
       >
-        Back
+        {isContestCategories ? "Home" : "Back"}
       </div>
     </div>
   );

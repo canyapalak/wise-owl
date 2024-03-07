@@ -6,10 +6,7 @@ import Image from "next/image";
 import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
 
-export default function EndlessQuiz({
-  openEndlessQuiz,
-  closeEndlessQuiz,
-}: EndlessQuizProps) {
+export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   const pickedCategory = useContext(CategoryContext);
   const [generatedQuestion, setGeneratedQuestion] =
     useState<formattedQuestion | null>(null);
@@ -120,7 +117,7 @@ export default function EndlessQuiz({
     <div className="flex flex-col gap-2 items-center">
       <div className="text-center">
         {loading ? (
-          <div className="loading mb-6">
+          <div className="loading mb-10 mt-10">
             <span className="loading-dot"></span>
             <span className="loading-dot"></span>
             <span className="loading-dot"></span>
@@ -198,7 +195,7 @@ export default function EndlessQuiz({
             className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
             onClick={handleNewQuestion}
           >
-            Ask Again
+            Retry
           </button>
         </div>
       )}

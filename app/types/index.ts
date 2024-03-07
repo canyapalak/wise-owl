@@ -1,18 +1,28 @@
 export interface WelcomeButtonsProps {
   openCategories: () => void;
   openInfo: () => void;
+  openContestInfo: () => void;
 }
 
 export interface CategoriesProps {
   closeCategories: () => void;
   openEndlessQuiz: () => void;
+  openContest: () => void;
+  isContestCategories: boolean;
 }
 
 export interface EndlessQuizProps {
   closeEndlessQuiz: () => void;
-  openEndlessQuiz: () => void;
 }
 
+export interface ContestProps {
+  closeContest: () => void;
+}
+
+export interface ContestInfoProps {
+  closeContestInfo: () => void;
+  openCategories: () => void;
+}
 export interface Category {
   id: number;
   title: string;
