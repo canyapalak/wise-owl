@@ -30,8 +30,10 @@ export interface Category {
 }
 
 export interface CategoryProviderProps {
-  pickedCategory: string | null;
-  setPickedCategory: React.Dispatch<React.SetStateAction<string | null>>;
+  pickedCategoryKeyword: string | null;
+  setPickedCategoryKeyword: React.Dispatch<React.SetStateAction<string | null>>;
+  pickedCategoryTitle: string | null;
+  setPickedCategoryTitle: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export interface formattedQuestion {

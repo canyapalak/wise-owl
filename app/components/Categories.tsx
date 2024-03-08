@@ -8,7 +8,8 @@ export default function Categories({
   openContest,
   isContestCategories,
 }: CategoriesProps) {
-  const { setPickedCategory } = useContext(CategoryContext);
+  const { setPickedCategoryKeyword, setPickedCategoryTitle } =
+    useContext(CategoryContext);
 
   console.log("isContestCategories", isContestCategories);
 
@@ -55,14 +56,16 @@ export default function Categories({
     },
   ];
 
-  const handleEndlessCategoryClick = (keyword: string) => {
-    setPickedCategory(keyword);
+  const handleEndlessCategoryClick = (keyword: string, title: string) => {
+    setPickedCategoryKeyword(keyword);
+    setPickedCategoryTitle(title);
     closeCategories();
     openEndlessQuiz();
   };
 
-  const handleContestCategoryClick = (keyword: string) => {
-    setPickedCategory(keyword);
+  const handleContestCategoryClick = (keyword: string, title: string) => {
+    setPickedCategoryKeyword(keyword);
+    setPickedCategoryTitle(title);
     closeCategories();
     openContest();
   };
@@ -78,8 +81,8 @@ export default function Categories({
           cursor-pointer w-40 text-center shadow-lg shadow-zinc-400"
             onClick={() =>
               !isContestCategories
-                ? handleEndlessCategoryClick(cat.keyword)
-                : handleContestCategoryClick(cat.keyword)
+                ? handleEndlessCategoryClick(cat.keyword, cat.title)
+                : handleContestCategoryClick(cat.keyword, cat.title)
             }
           >
             {cat.title}

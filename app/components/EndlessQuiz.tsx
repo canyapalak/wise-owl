@@ -7,7 +7,8 @@ import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
 
 export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
-  const pickedCategory = useContext(CategoryContext);
+  const pickedCategoryKeyword = useContext(CategoryContext);
+  const pickedCategoryTitle = useContext(CategoryContext);
   const [generatedQuestion, setGeneratedQuestion] =
     useState<formattedQuestion | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -17,10 +18,10 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   useEffect(() => {
     setIsCorrect(null);
     const fetchData = async () => {
-      if (pickedCategory) {
+      if (pickedCategoryKeyword) {
         setLoading(true);
         try {
-          await generateQuestion(pickedCategory);
+          await generateQuestion(pickedCategoryKeyword);
         } finally {
           setLoading(false);
         }
@@ -42,20 +43,24 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   const handleNewQuestion = async () => {
     setLoading(true);
     setSelectedOption(null);
-    await generateQuestion(pickedCategory);
+    await generateQuestion(pickedCategoryKeyword);
     setLoading(false);
   };
 
-  console.log("pickedCategory", pickedCategory.pickedCategory);
+  console.log(
+    "pickedCategoryKeyword",
+    pickedCategoryKeyword.pickedCategoryKeyword
+  );
+  console.log("pickedCategoryTitle", pickedCategoryTitle.pickedCategoryTitle);
 
   const generateQuestion = async (pickedCategoryObject: {
-    pickedCategory: string;
+    pickedCategoryKeyword: string;
   }) => {
-    const pickedCategory = pickedCategoryObject.pickedCategory;
+    const pickedCategoryKeyword = pickedCategoryObject.pickedCategoryKeyword;
     const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
     const promptText = `You are an AI assistant that creates creative and interesting trivia questions according to certain rules and a sample.
-    You will generate a trivia question for each prompt about ${pickedCategory} and give four options, and the correct answer after them.
+    You will generate a trivia question for each prompt about ${pickedCategoryKeyword} and give four options, and the correct answer after them.
     One of the options should be the correct answer.The difficulty of the questions should be middle level, suitable for average adult knowledge.
     
     You will strictly follow these rules:
@@ -98,7 +103,8 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
       console.log("Response status:", response.status);
 
       const responseData = await response.json();
-      const questionContent = responseData.choices[0].message.content;
+      console.log("responseData :>> ", responseData);
+      const questionContent = responseData.choices[0]?.message.content;
       console.log("questionContent :>> ", questionContent);
       const formattedQuestion = formatQuestion(questionContent);
 
@@ -115,6 +121,17 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
 
   return (
     <div className="flex flex-col gap-2 items-center">
+      {!loading && generatedQuestion?.question !== "AI is confused :/" && (
+        <div className="text-lg ml-0 mr-auto mt-0 mb-4">
+          <span>Category:</span>
+          <span
+            className="bg-navy-default text-neutral-50 text-lg rounded-md px-2 py-1
+          text-center shadow-md shadow-zinc-400 ml-1"
+          >
+            {pickedCategoryTitle.pickedCategoryTitle}
+          </span>
+        </div>
+      )}
       <div className="text-center">
         {loading ? (
           <div className="loading mb-10 mt-10">
