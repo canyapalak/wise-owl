@@ -121,16 +121,14 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
 
   return (
     <div className="flex flex-col gap-2 items-center">
-      {!loading && generatedQuestion?.question !== "AI is confused :/" && (
-        <div className="text-lg mt-0 mb-1 items-center flex flex-row justify-center">
-          <span
-            className="bg-navy-default text-neutral-50 text-lg px-2 py-1
+      <div className="text-lg mt-0 mb-1 items-center flex flex-row justify-center">
+        <span
+          className="bg-navy-default text-neutral-50 text-lg px-2 py-1
           text-center items-center category-tag"
-          >
-            {pickedCategoryTitle.pickedCategoryTitle}
-          </span>
-        </div>
-      )}
+        >
+          {pickedCategoryTitle.pickedCategoryTitle}
+        </span>
+      </div>
       <div className="text-center">
         {loading ? (
           <div className="loading mb-10 mt-10">
