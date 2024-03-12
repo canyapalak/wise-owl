@@ -5,9 +5,11 @@ import { CategoryContext } from "../context/CategoryContext";
 import Image from "next/image";
 import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
-import { QuestionCountContext } from "../context/QuestionCountContext";
 
-export default function Competition({ closeContest }: ContestProps) {
+export default function Competition({
+  closeContest,
+  openContestResult,
+}: ContestProps) {
   const pickedCategoryKeyword = useContext(CategoryContext);
   const pickedCategoryTitle = useContext(CategoryContext);
   const [generatedQuestion, setGeneratedQuestion] =
@@ -15,7 +17,7 @@ export default function Competition({ closeContest }: ContestProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const { questionCount, setQuestionCount } = useContext(QuestionCountContext);
+  const [questionCount, setQuestionCount] = useState<number>(0);
 
   useEffect(() => {
     setIsCorrect(null);
@@ -48,13 +50,21 @@ export default function Competition({ closeContest }: ContestProps) {
       setLoading(true);
       setSelectedOption(null);
       await generateQuestion(pickedCategoryKeyword);
-      if (generatedQuestion?.question !== "AI is confused :/") {
+      if (
+        generatedQuestion &&
+        generatedQuestion?.question !== "AI is confused :/"
+      ) {
         setQuestionCount(questionCount + 1);
       }
       setLoading(false);
     } else {
-      closeContest();
+      ("");
     }
+  };
+
+  const handleShowResultsClick = (): void => {
+    closeContest();
+    openContestResult();
   };
 
   console.log(
@@ -62,6 +72,7 @@ export default function Competition({ closeContest }: ContestProps) {
     pickedCategoryKeyword.pickedCategoryKeyword
   );
   console.log("pickedCategoryTitle", pickedCategoryTitle.pickedCategoryTitle);
+  console.log("questionCount", questionCount);
 
   const generateQuestion = async (pickedCategoryObject: {
     pickedCategoryKeyword: string;
@@ -140,6 +151,16 @@ export default function Competition({ closeContest }: ContestProps) {
         </span>
       </div>
       <div className="text-center">
+        {!loading &&
+          generatedQuestion?.question !== "AI is confused :/" &&
+          questionCount !== 3 && (
+            <p
+              className="text-lg px-2 py-1
+       text-center items-center"
+            >
+              Question {questionCount + 1} of 3
+            </p>
+          )}
         {loading ? (
           <div className="loading mb-10 mt-10">
             <span className="loading-dot"></span>
@@ -147,14 +168,9 @@ export default function Competition({ closeContest }: ContestProps) {
             <span className="loading-dot"></span>
           </div>
         ) : (
+          questionCount !== 3 &&
           generatedQuestion && (
             <div className="flex flex-wrap flex-col items-center">
-              <span
-                className="text-lg px-2 py-1
-       text-center items-center ca"
-              >
-                Question {questionCount + 1} of 3
-              </span>
               <span className="">{generatedQuestion.question}</span>
               {selectedOption !== null && (
                 <div>
@@ -207,26 +223,39 @@ export default function Competition({ closeContest }: ContestProps) {
               </div>
               {selectedOption &&
                 generatedQuestion?.question !== "AI is confused :/" && (
-                  <button
+                  <div
                     className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
                     onClick={handleNewQuestion}
                   >
                     Next
-                  </button>
+                  </div>
                 )}
             </div>
           )
         )}
       </div>
-      {!loading && generatedQuestion?.question === "AI is confused :/" && (
+      {!loading &&
+        questionCount !== 3 &&
+        generatedQuestion?.question === "AI is confused :/" && (
+          <div className="items-center flex flex-col justify-normal">
+            <Image src={confused} alt="confused" className="w-24 mb-12" />
+            <div
+              className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
+              onClick={handleNewQuestion}
+            >
+              Retry
+            </div>
+          </div>
+        )}
+      {questionCount === 3 && (
         <div className="items-center flex flex-col justify-normal">
-          <Image src={confused} alt="confused" className="w-24 mb-12" />
-          <button
-            className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
-            onClick={handleNewQuestion}
+          <p>You have completed the quiz!</p>
+          <div
+            className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
+            onClick={handleShowResultsClick}
           >
-            Retry
-          </button>
+            Show Result
+          </div>
         </div>
       )}
       <div

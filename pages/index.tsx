@@ -1,11 +1,11 @@
+import { useState } from "react";
 import Categories from "@/app/components/Categories";
 import EndlessQuiz from "@/app/components/EndlessQuiz";
 import Contest from "@/app/components/Contest";
 import Info from "@/app/components/Info";
 import WelcomeButtons from "@/app/components/WelcomeButtons";
-import { useContext, useState } from "react";
 import ContestInfo from "@/app/components/ContestInfo";
-import { QuestionCountContext } from "@/app/context/QuestionCountContext";
+import ContestResult from "@/app/components/ContestResult";
 
 export default function Home() {
   const [isInfo, setIsInfo] = useState(false);
@@ -14,7 +14,7 @@ export default function Home() {
   const [isContest, setIsContest] = useState(false);
   const [isContestInfo, setIsContestInfo] = useState(false);
   const [isContestCategories, setIsContestCategories] = useState(false);
-  const { isContestOver } = useContext(QuestionCountContext);
+  const [isContestResult, setIsContestResult] = useState(false);
 
   const openInfo = (): void => {
     setIsInfo(true);
@@ -59,19 +59,33 @@ export default function Home() {
     setIsContestInfo(false);
   };
 
+  const openContestResult = (): void => {
+    setIsContestResult(true);
+    console.log("isContestResult-func :>> ", isContestResult);
+  };
+
+  const closeContestResult = (): void => {
+    setIsContestResult(false);
+  };
+
+  console.log("isContestResult :>> ", isContestResult);
+
   return (
     <div className="text-2xl">
       {isInfo &&
+        !isContestResult &&
         !isCategories &&
         !isContestInfo &&
         !isContest &&
         !isEndlessQuiz && <Info closeInfo={closeInfo} />}
       {!isInfo &&
+        !isContestResult &&
         !isCategories &&
         !isContestInfo &&
         !isContest &&
         isEndlessQuiz && <EndlessQuiz closeEndlessQuiz={closeEndlessQuiz} />}
       {!isInfo &&
+        !isContestResult &&
         !isCategories &&
         !isEndlessQuiz &&
         isContestInfo &&
@@ -82,11 +96,18 @@ export default function Home() {
           />
         )}
       {!isInfo &&
+        !isContestResult &&
         !isCategories &&
         !isEndlessQuiz &&
         !isContestInfo &&
-        isContest && <Contest closeContest={closeContest} />}
+        isContest && (
+          <Contest
+            closeContest={closeContest}
+            openContestResult={openContestResult}
+          />
+        )}
       {!isInfo &&
+        !isContestResult &&
         isCategories &&
         !isContestInfo &&
         !isContest &&
@@ -99,6 +120,7 @@ export default function Home() {
           />
         )}
       {!isInfo &&
+        !isContestResult &&
         !isCategories &&
         !isContestInfo &&
         !isContest &&
@@ -108,6 +130,14 @@ export default function Home() {
             openInfo={openInfo}
             openContestInfo={openContestInfo}
           />
+        )}
+      {!isInfo &&
+        !isCategories &&
+        !isEndlessQuiz &&
+        !isContestInfo &&
+        !isContest &&
+        isContestResult && (
+          <ContestResult closeContestResult={closeContestResult} />
         )}
     </div>
   );

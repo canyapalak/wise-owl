@@ -6,12 +6,11 @@ import { CategoryProvider } from "@/app/context/CategoryContext";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import { useState } from "react";
 import CreditsModal from "@/app/components/CreditsModal";
-import { QuestionCountProvider } from "@/app/context/QuestionCountContext";
 
 export default function MyApp({ Component, pageProps }: any) {
   const [open, setOpen] = useState(false);
 
-  const handleOpenModal = () => {
+  const handleOpenModal: any = () => {
     setOpen(true);
   };
   return (
@@ -36,9 +35,7 @@ export default function MyApp({ Component, pageProps }: any) {
       border-spacing-20 border-4 border-neutral-600 rounded-xl py-6 px-6 w-10/12 md:w-3/4 bg-white mb-6"
         >
           <CategoryProvider>
-            <QuestionCountProvider>
-              <Component {...pageProps} />
-            </QuestionCountProvider>
+            <Component {...pageProps} />
           </CategoryProvider>
         </div>
       </main>

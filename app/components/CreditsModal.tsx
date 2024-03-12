@@ -17,7 +17,7 @@ export default function CreditsModal({ open, setOpen }: ModalInterface) {
       <Modal open={open} className="modal-main">
         <Box
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-           border-2 border-neutral-600 shadow-md rounded-lg outline-none flex flex-col w-4/6 md:3/6 lg:w-2/6 modal-box"
+           border-2 border-neutral-600 shadow-md rounded-lg outline-none flex flex-col w-4/6 md:w-3/6 lg:w-2/6 modal-box"
         >
           <HighlightOffIcon
             className="ml-auto mr-1 mt-1 cursor-pointer text-3xl hover:text-gray-default"
