@@ -1,13 +1,12 @@
-import { ContestProps, formattedQuestion } from "../types";
 import "@/app/globals.css";
 import { useContext, useEffect, useState } from "react";
 import { CategoryContext } from "../context/CategoryContext";
+import { EndlessQuizProps, formattedQuestion } from "../types";
 import Image from "next/image";
 import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
-import { QuestionCountContext } from "../context/QuestionCountContext";
 
-export default function Competition({ closeContest }: ContestProps) {
+export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   const pickedCategoryKeyword = useContext(CategoryContext);
   const pickedCategoryTitle = useContext(CategoryContext);
   const [generatedQuestion, setGeneratedQuestion] =
@@ -15,11 +14,9 @@ export default function Competition({ closeContest }: ContestProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const { questionCount, setQuestionCount } = useContext(QuestionCountContext);
 
   useEffect(() => {
     setIsCorrect(null);
-    setQuestionCount(0);
     const fetchData = async () => {
       if (pickedCategoryKeyword) {
         setLoading(true);
@@ -44,17 +41,10 @@ export default function Competition({ closeContest }: ContestProps) {
   };
 
   const handleNewQuestion = async () => {
-    if (questionCount < 3) {
-      setLoading(true);
-      setSelectedOption(null);
-      await generateQuestion(pickedCategoryKeyword);
-      if (generatedQuestion?.question !== "AI is confused :/") {
-        setQuestionCount(questionCount + 1);
-      }
-      setLoading(false);
-    } else {
-      closeContest();
-    }
+    setLoading(true);
+    setSelectedOption(null);
+    await generateQuestion(pickedCategoryKeyword);
+    setLoading(false);
   };
 
   console.log(
@@ -149,12 +139,6 @@ export default function Competition({ closeContest }: ContestProps) {
         ) : (
           generatedQuestion && (
             <div className="flex flex-wrap flex-col items-center">
-              <span
-                className="text-lg px-2 py-1
-       text-center items-center ca"
-              >
-                Question {questionCount + 1} of 3
-              </span>
               <span className="">{generatedQuestion.question}</span>
               {selectedOption !== null && (
                 <div>
@@ -232,7 +216,7 @@ export default function Competition({ closeContest }: ContestProps) {
       <div
         className="button-prm bg-gray-default hover:bg-gray-light  text-neutral-50 text-2xl rounded-md p-3
           cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-1"
-        onClick={closeContest}
+        onClick={closeEndlessQuiz}
       >
         Home
       </div>

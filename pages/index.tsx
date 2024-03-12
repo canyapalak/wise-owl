@@ -3,8 +3,9 @@ import EndlessQuiz from "@/app/components/EndlessQuiz";
 import Contest from "@/app/components/Contest";
 import Info from "@/app/components/Info";
 import WelcomeButtons from "@/app/components/WelcomeButtons";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ContestInfo from "@/app/components/ContestInfo";
+import { QuestionCountContext } from "@/app/context/QuestionCountContext";
 
 export default function Home() {
   const [isInfo, setIsInfo] = useState(false);
@@ -13,6 +14,7 @@ export default function Home() {
   const [isContest, setIsContest] = useState(false);
   const [isContestInfo, setIsContestInfo] = useState(false);
   const [isContestCategories, setIsContestCategories] = useState(false);
+  const { isContestOver } = useContext(QuestionCountContext);
 
   const openInfo = (): void => {
     setIsInfo(true);
