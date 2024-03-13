@@ -1,10 +1,11 @@
+import { useState } from "react";
 import "tailwindcss/tailwind.css";
 import "@/app/globals.css";
 import Head from "next/head";
 import Header from "@/app/components/Header";
 import { CategoryProvider } from "@/app/context/CategoryContext";
+import { ScoreProvider } from "@/app/context/ScoreContext";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import { useState } from "react";
 import CreditsModal from "@/app/components/CreditsModal";
 
 export default function MyApp({ Component, pageProps }: any) {
@@ -35,7 +36,9 @@ export default function MyApp({ Component, pageProps }: any) {
       border-spacing-20 border-4 border-neutral-600 rounded-xl py-6 px-6 w-10/12 md:w-3/4 bg-white mb-6"
         >
           <CategoryProvider>
-            <Component {...pageProps} />
+            <ScoreProvider>
+              <Component {...pageProps} />
+            </ScoreProvider>
           </CategoryProvider>
         </div>
       </main>

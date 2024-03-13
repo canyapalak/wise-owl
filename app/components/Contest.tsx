@@ -5,8 +5,9 @@ import { CategoryContext } from "../context/CategoryContext";
 import Image from "next/image";
 import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
+import { ScoreContext } from "../context/ScoreContext";
 
-export default function Competition({
+export default function Contest({
   closeContest,
   openContestResult,
 }: ContestProps) {
@@ -18,8 +19,10 @@ export default function Competition({
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [questionCount, setQuestionCount] = useState<number>(0);
+  const { score, setScore } = useContext(ScoreContext);
 
   useEffect(() => {
+    setScore(0);
     setIsCorrect(null);
     setQuestionCount(0);
     const fetchData = async () => {
@@ -41,9 +44,18 @@ export default function Competition({
   const handleOptionClick = (optValue: string) => {
     if (selectedOption === null) {
       setSelectedOption(optValue);
-      setIsCorrect(optValue === String(generatedQuestion?.correctOption));
+      setIsCorrect((prevIsCorrect) => {
+        const newIsCorrect =
+          optValue === String(generatedQuestion?.correctOption);
+        if (newIsCorrect) {
+          setScore(score + 1);
+        }
+        return newIsCorrect;
+      });
     }
   };
+
+  console.log("score :>> ", score);
 
   const handleNewQuestion = async () => {
     if (questionCount < 3) {

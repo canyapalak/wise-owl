@@ -39,9 +39,9 @@ export interface CategoryProviderProps {
   pickedCategoryTitle: string | null;
   setPickedCategoryTitle: React.Dispatch<React.SetStateAction<string | null>>;
 }
-export interface QuestionCountProviderProps {
-  questionCount: number;
-  setQuestionCount: Dispatch<SetStateAction<number>>;
+export interface ScoreProviderProps {
+  score: number | null;
+  setScore: React.Dispatch<React.SetStateAction<number | null>>;
 }
 export interface formattedQuestion {
   question: string;
