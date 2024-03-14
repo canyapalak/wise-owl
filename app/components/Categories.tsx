@@ -37,7 +37,8 @@ export default function Categories({
     {
       id: 5,
       title: "Sports",
-      keyword: "sports, famous players and sport clubs",
+      keyword:
+        "sports, famous players and sport clubs, but not mostly from USA",
     },
     {
       id: 6,
@@ -72,8 +73,8 @@ export default function Categories({
 
   return (
     <div className="flex flex-col gap-6 items-center">
-      <p className="text-center text-neutral-700">Pick a category!</p>
-      <div className="flex flex-wrap gap-4 justify-center">
+      <p className="text-center text-neutral-700 fade-in">Pick a category!</p>
+      <div className="flex flex-wrap gap-4 justify-center fade-in">
         {CategoryArray.map((cat) => (
           <div
             key={cat.id}

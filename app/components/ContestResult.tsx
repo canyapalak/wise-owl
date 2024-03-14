@@ -30,9 +30,9 @@ export default function ContestResult({
   const getResultText = (score: number) => {
     if (score >= 0 && score <= 2) {
       return (
-        <p className="text-justify">
+        <p className="text-justify px-3">
           You have scored <span className="text-brick-default">{score}</span>{" "}
-          out of 10 questions and become the{" "}
+          out of 10 and become the{" "}
           <span className="text-brick-default">Baby Crow</span>.
           Caw-gratulations, if you will! You're just starting your journey into
           the vast realm of knowledge, much like a baby crow taking its first
@@ -43,7 +43,7 @@ export default function ContestResult({
       );
     } else if (score > 2 && score <= 4) {
       return (
-        <p>
+        <p className="text-justify px-3">
           You are the <span className="text-brick-default">Curious Cat</span>{" "}
           with <span className="text-brick-default">{score}</span> correct
           answers out of 10! Well, maybe you're not purrfect yet, but you're
@@ -56,7 +56,7 @@ export default function ContestResult({
       );
     } else if (score > 4 && score <= 6) {
       return (
-        <p>
+        <p className="text-justify px-3">
           You've become the{" "}
           <span className="text-brick-default">Average Chicken</span>.{" "}
           <span className="text-brick-default">{score}</span> out of 10! You're
@@ -69,7 +69,7 @@ export default function ContestResult({
       );
     } else if (score > 6 && score <= 8) {
       return (
-        <p>
+        <p className="text-justify px-3">
           You are the <span className="text-brick-default">Canny Fox</span>, as
           you have answered <span className="text-brick-default">{score}</span>{" "}
           questions out of 10. With your quick wit and smart maneuvers, you're
@@ -81,7 +81,7 @@ export default function ContestResult({
       );
     } else {
       return (
-        <p>
+        <p className="text-justify px-3">
           Congratulations for earning the esteemed title of the{" "}
           <span className="text-brick-default">Wise Owl</span>, with{" "}
           <span className="text-brick-default">{score}</span> correct answers.
@@ -99,12 +99,12 @@ export default function ContestResult({
   const resultText = getResultText(score);
 
   return (
-    <div className="gap-8 items-center flex flex-col">
-      <div className="flex flex-row">
+    <div className="gap-8 items-center flex flex-col fade-in-long">
+      <div className="flex-col flex items-center">
         <Image
           src={animalImage}
           alt="animal"
-          className="w-36 h-36 float-left"
+          className="w-36 h-36 float-left items-center"
         />
         {resultText}
       </div>

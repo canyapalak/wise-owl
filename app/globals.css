@@ -40,6 +40,14 @@ font-family: "Righteous";
   border-radius: 0.375rem;
 }
 
+.fade-in {
+  animation: fadeIn 2s;
+}
+
+.fade-in-long {
+  animation: fadeIn 4s;
+}
+
 .loading {
   align-items: center;
   display: flex;
@@ -80,5 +88,15 @@ font-family: "Righteous";
   100% {
     background-color: #cc8800;
     transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

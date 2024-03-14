@@ -14,9 +14,11 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [questionCount, setQuestionCount] = useState<number>(0);
 
   useEffect(() => {
     setIsCorrect(null);
+    setQuestionCount(0);
     const fetchData = async () => {
       if (pickedCategoryKeyword) {
         setLoading(true);
@@ -44,6 +46,12 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
     setLoading(true);
     setSelectedOption(null);
     await generateQuestion(pickedCategoryKeyword);
+    if (
+      generatedQuestion &&
+      generatedQuestion?.question !== "AI is confused :/"
+    ) {
+      setQuestionCount(questionCount + 1);
+    }
     setLoading(false);
   };
 
@@ -130,6 +138,14 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
         </span>
       </div>
       <div className="text-center">
+        {!loading && generatedQuestion?.question !== "AI is confused :/" && (
+          <p
+            className="text-lg px-2 py-1
+       text-center items-center fade-in text-mustard-default"
+          >
+            Question {questionCount + 1}
+          </p>
+        )}
         {loading ? (
           <div className="loading mb-10 mt-10">
             <span className="loading-dot"></span>
@@ -138,7 +154,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
           </div>
         ) : (
           generatedQuestion && (
-            <div className="flex flex-wrap flex-col items-center">
+            <div className="flex flex-wrap flex-col items-center fade-in">
               <span className="">{generatedQuestion.question}</span>
               {selectedOption !== null && (
                 <div>
@@ -204,7 +220,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
       </div>
       {!loading && generatedQuestion?.question === "AI is confused :/" && (
         <div className="items-center flex flex-col justify-normal">
-          <Image src={confused} alt="confused" className="w-24 mb-12" />
+          <Image src={confused} alt="confused" className="w-24 mb-12 fade-in" />
           <button
             className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
             onClick={handleNewQuestion}

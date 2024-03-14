@@ -11,7 +11,7 @@ export default function ContestInfo({
 
   return (
     <div className="flex flex-col gap-8 items-center">
-      <p className="text-center text-neutral-700">
+      <p className="text-center text-neutral-700 fade-in">
         You will be asked 10 questions in the category you pick. At the end of
         the contest, you can find out whether you are the "Wise Owl" or
         something else.

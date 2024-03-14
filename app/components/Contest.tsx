@@ -58,7 +58,7 @@ export default function Contest({
   console.log("score :>> ", score);
 
   const handleNewQuestion = async () => {
-    if (questionCount < 3) {
+    if (questionCount < 1) {
       setLoading(true);
       setSelectedOption(null);
       await generateQuestion(pickedCategoryKeyword);
@@ -165,12 +165,12 @@ export default function Contest({
       <div className="text-center">
         {!loading &&
           generatedQuestion?.question !== "AI is confused :/" &&
-          questionCount !== 3 && (
+          questionCount !== 1 && (
             <p
               className="text-lg px-2 py-1
-       text-center items-center"
+       text-center items-center fade-in text-mustard-default"
             >
-              Question {questionCount + 1} of 3
+              Question {questionCount + 1} of 10
             </p>
           )}
         {loading ? (
@@ -180,9 +180,9 @@ export default function Contest({
             <span className="loading-dot"></span>
           </div>
         ) : (
-          questionCount !== 3 &&
+          questionCount !== 1 &&
           generatedQuestion && (
-            <div className="flex flex-wrap flex-col items-center">
+            <div className="flex flex-wrap flex-col items-center fade-in">
               <span className="">{generatedQuestion.question}</span>
               {selectedOption !== null && (
                 <div>
@@ -247,10 +247,14 @@ export default function Contest({
         )}
       </div>
       {!loading &&
-        questionCount !== 3 &&
+        questionCount !== 1 &&
         generatedQuestion?.question === "AI is confused :/" && (
           <div className="items-center flex flex-col justify-normal">
-            <Image src={confused} alt="confused" className="w-24 mb-12" />
+            <Image
+              src={confused}
+              alt="confused"
+              className="w-24 mb-12 fade-in"
+            />
             <div
               className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
               onClick={handleNewQuestion}
@@ -259,9 +263,9 @@ export default function Contest({
             </div>
           </div>
         )}
-      {questionCount === 3 && (
+      {questionCount === 1 && (
         <div className="items-center flex flex-col justify-normal">
-          <p>You have completed the quiz!</p>
+          <p className="fade-in">You have completed the quiz!</p>
           <div
             className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
             onClick={handleShowResultsClick}
