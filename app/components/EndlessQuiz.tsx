@@ -5,6 +5,7 @@ import { EndlessQuizProps, formattedQuestion } from "../types";
 import Image from "next/image";
 import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
+import Spinner from "./Spinner";
 
 export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   const pickedCategoryKeyword = useContext(CategoryContext);
@@ -67,13 +68,28 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
     const pickedCategoryKeyword = pickedCategoryObject.pickedCategoryKeyword;
     const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
-    const promptText = `You are an AI assistant that creates creative and interesting trivia questions according to certain rules and a sample.
+    const promptText = `You are an AI assistant that creates creative and interesting trivia questions according to certain rules and the sample given below.
     You will generate a trivia question for each prompt about ${pickedCategoryKeyword} and give four options, and the correct answer after them.
     One of the options should be the correct answer.The difficulty of the questions should be middle level, suitable for average adult knowledge.
     
     You will strictly follow these rules:
     
-    1 - The question sentence should not include the correct answer or any answer in the options.
+    1 - The question sentence should not include the whole or any part of the correct answer or any other option in the options.
+
+    Example:
+
+      Question: Who is the protagonist in Super Mario games?
+    
+    Option 1: Luigi
+    Option 2: Sonic
+    Option 3: Mario
+    Option 4: Pikachu
+    
+    Correct Answer: Mario
+
+    This question is wrong since the correct answer "Mario" is already included in the question sentence. Do not generate questions like this.
+
+
     2 - You should not ask the same question until 30 new prompts.
     3 - The question should not exceed 200 characters.
     4 - Each option should not exceed 50 characters.
@@ -147,14 +163,10 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
           </p>
         )}
         {loading ? (
-          <div className="loading mb-10 mt-10">
-            <span className="loading-dot"></span>
-            <span className="loading-dot"></span>
-            <span className="loading-dot"></span>
-          </div>
+          <Spinner />
         ) : (
           generatedQuestion && (
-            <div className="flex flex-wrap flex-col items-center fade-in">
+            <div className="flex flex-wrap flex-col items-center fade-in px-2">
               <span className="">{generatedQuestion.question}</span>
               {selectedOption !== null && (
                 <div>
@@ -198,7 +210,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
                         : ""
                     } text-neutral-50 text-2xl rounded-md p-3 ${
                       selectedOption === null && "cursor-pointer"
-                    } w-64 text-center shadow-lg shadow-zinc-400`}
+                    } w-56 sm:w-64 text-center shadow-lg shadow-zinc-400`}
                     onClick={() => handleOptionClick(optValue)}
                   >
                     {`${optValue}`}

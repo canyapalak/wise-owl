@@ -6,6 +6,7 @@ import Image from "next/image";
 import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
 import { ScoreContext } from "../context/ScoreContext";
+import Spinner from "./Spinner";
 
 export default function Contest({
   closeContest,
@@ -174,15 +175,11 @@ export default function Contest({
             </p>
           )}
         {loading ? (
-          <div className="loading mb-10 mt-10">
-            <span className="loading-dot"></span>
-            <span className="loading-dot"></span>
-            <span className="loading-dot"></span>
-          </div>
+          <Spinner />
         ) : (
           questionCount !== 1 &&
           generatedQuestion && (
-            <div className="flex flex-wrap flex-col items-center fade-in">
+            <div className="flex flex-wrap flex-col items-center fade-in px-2">
               <span className="">{generatedQuestion.question}</span>
               {selectedOption !== null && (
                 <div>
@@ -226,7 +223,7 @@ export default function Contest({
                         : ""
                     } text-neutral-50 text-2xl rounded-md p-3 ${
                       selectedOption === null && "cursor-pointer"
-                    } w-64 text-center shadow-lg shadow-zinc-400`}
+                    } w-56 sm:w-64 text-center shadow-lg shadow-zinc-400`}
                     onClick={() => handleOptionClick(optValue)}
                   >
                     {`${optValue}`}
@@ -265,7 +262,7 @@ export default function Contest({
         )}
       {questionCount === 1 && (
         <div className="items-center flex flex-col justify-normal">
-          <p className="fade-in">You have completed the quiz!</p>
+          <p className="fade-in text-center">You have completed the quiz!</p>
           <div
             className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
             onClick={handleShowResultsClick}
