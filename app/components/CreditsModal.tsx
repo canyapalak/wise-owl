@@ -40,9 +40,9 @@ export default function CreditsModal({ open, setOpen }: ModalInterface) {
                   </p>
                 </a>
               </div>
-              <div className="flex flex-row text-justify align-middle gap-1">
+              <div className="flex flex-col items-center">
                 <FaceOutlinedIcon className="mt-[26px]" width={36} />
-                <p className="text-lg mt-6 mb-1">Can Yapalak</p>
+                <p className="text-lg mb-1">Can Yapalak</p>
               </div>
               <div className="flex flex-row gap-3 mb-2">
                 <a

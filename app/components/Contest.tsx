@@ -59,7 +59,7 @@ export default function Contest({
   console.log("score :>> ", score);
 
   const handleNewQuestion = async () => {
-    if (questionCount < 1) {
+    if (questionCount < 10) {
       setLoading(true);
       setSelectedOption(null);
       await generateQuestion(pickedCategoryKeyword);
@@ -166,7 +166,7 @@ export default function Contest({
       <div className="text-center">
         {!loading &&
           generatedQuestion?.question !== "AI is confused :/" &&
-          questionCount !== 1 && (
+          questionCount !== 10 && (
             <p
               className="text-lg px-2 py-1
        text-center items-center fade-in text-mustard-default"
@@ -177,7 +177,7 @@ export default function Contest({
         {loading ? (
           <Spinner />
         ) : (
-          questionCount !== 1 &&
+          questionCount !== 10 &&
           generatedQuestion && (
             <div className="flex flex-wrap flex-col items-center fade-in px-2">
               <span className="">{generatedQuestion.question}</span>
@@ -244,7 +244,7 @@ export default function Contest({
         )}
       </div>
       {!loading &&
-        questionCount !== 1 &&
+        questionCount !== 10 &&
         generatedQuestion?.question === "AI is confused :/" && (
           <div className="items-center flex flex-col justify-normal">
             <Image
@@ -260,7 +260,7 @@ export default function Contest({
             </div>
           </div>
         )}
-      {questionCount === 1 && (
+      {questionCount === 10 && (
         <div className="items-center flex flex-col justify-normal">
           <p className="fade-in text-center">You have completed the quiz!</p>
           <div
