@@ -7,7 +7,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import FaceOutlinedIcon from "@mui/icons-material/FaceOutlined";
 import Image from "next/image";
-import owlHead from "@/public/favicon.ico";
+import owlHead from "@/public/assets/favicon.png";
 
 export default function CreditsModal({ open, setOpen }: ModalInterface) {
   const handleClose = () => setOpen(false);
@@ -28,7 +28,7 @@ export default function CreditsModal({ open, setOpen }: ModalInterface) {
       border-spacing-20 border-4 border-neutral-600 rounded-xl w-4/5 ml-auto mr-auto mb-8 mt-2 modal-dash"
           >
             <div className="p-4 flex flex-col justify-center items-center">
-              <Image src={owlHead} alt="logo" width={36} />
+              <Image src={owlHead} alt="logo" width={36} height={36} />
               <p className="text-brick-default text-2xl">Wise Owl</p>
               <p className="text-md">2024</p>
               <p className="text-md">Version: 1.0</p>
