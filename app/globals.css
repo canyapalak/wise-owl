@@ -11,13 +11,12 @@
 }
 
 body {
-  background: rgb(237, 237, 237);
-  background: radial-gradient(circle, rgba(237, 237, 237, 1) 29%, rgba(248, 248, 255, 1) 79%);
+background: rgb(248, 248, 255);
+  background: radial-gradient(circle, rgba(248, 248, 255, 1) 25%, rgba(236, 236, 236, 1) 79%);
   font-family: "Righteous";
 }
 .container-dash {
-background: rgb(255, 255, 255);
-  background: radial-gradient(circle, rgba(255, 255, 255, 1) 29%, rgba(255, 254, 247, 1) 79%);
+background: white
 }
 
 .button-prm:hover {
@@ -31,8 +30,8 @@ background: rgb(255, 255, 255);
 }
 
 .modal-box {
-  background: rgb(237, 237, 237);
-  background: radial-gradient(circle, rgba(237, 237, 237, 1) 29%, rgba(248, 248, 255, 1) 79%);
+background: rgb(248, 248, 255);
+  background: radial-gradient(circle, rgba(248, 248, 255, 1) 25%, rgba(236, 236, 236, 1) 79%);
 }
 
 .modal-dash {
