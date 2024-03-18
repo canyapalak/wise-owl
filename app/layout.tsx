@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./countdown-bar.css";
 
 export const metadata = {
   title: "Create Next App",

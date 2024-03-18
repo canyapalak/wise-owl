@@ -76,3 +76,8 @@ background: rgb(248, 248, 255);
     -webkit-transform: rotate(360deg);
   }
 }
+
+#myBar {
+  height: 24px;
+    width: 0
+}

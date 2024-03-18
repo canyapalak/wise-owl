@@ -1,4 +1,3 @@
-import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -18,6 +17,7 @@ const config: Config = {
         gray: {
           default: "#7B7B74",
           light: "#8A8A83",
+          ultralight: "#dbdbd9",
         },
         navy: {
           default: "#008fb3",
