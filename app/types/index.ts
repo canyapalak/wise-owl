@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-
 export interface WelcomeButtonsProps {
   openCategories: () => void;
   openInfo: () => void;
@@ -38,6 +36,8 @@ export interface CategoryProviderProps {
   setPickedCategoryKeyword: React.Dispatch<React.SetStateAction<string | null>>;
   pickedCategoryTitle: string | null;
   setPickedCategoryTitle: React.Dispatch<React.SetStateAction<string | null>>;
+  isChillMode: boolean | null;
+  setIsChillMode: React.Dispatch<React.SetStateAction<boolean | null>>;
 }
 export interface ScoreProviderProps {
   score: number | null;

@@ -1,5 +1,4 @@
 import { WelcomeButtonsProps } from "../types";
-import CountdownBar from "./CountdownBar";
 
 export default function WelcomeButtons({
   openCategories,
@@ -8,7 +7,6 @@ export default function WelcomeButtons({
 }: WelcomeButtonsProps) {
   return (
     <>
-      <CountdownBar />
       <div className="flex flex-col gap-4 items-center">
         <div
           className="button-prm bg-brick-default text-neutral-50 text-2xl rounded-md p-3

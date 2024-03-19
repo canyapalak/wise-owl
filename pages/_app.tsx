@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "tailwindcss/tailwind.css";
 import "@/app/globals.css";
-import "@/app/countdown-bar.css";
 import Head from "next/head";
 import Header from "@/app/components/Header";
 import { CategoryProvider } from "@/app/context/CategoryContext";

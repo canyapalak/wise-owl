@@ -1,6 +1,9 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CategoriesProps, Category } from "../types";
 import { CategoryContext } from "../context/CategoryContext";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxRoundedIcon from "@mui/icons-material/CheckBoxRounded";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 
 export default function Categories({
   closeCategories,
@@ -8,10 +11,29 @@ export default function Categories({
   openContest,
   isContestCategories,
 }: CategoriesProps) {
-  const { setPickedCategoryKeyword, setPickedCategoryTitle } =
-    useContext(CategoryContext);
+  const {
+    setPickedCategoryKeyword,
+    setPickedCategoryTitle,
+    setIsChillMode,
+    isChillMode,
+  } = useContext(CategoryContext);
+
+  useEffect(() => {
+    setIsChillMode(false);
+  }, []);
+
+  const handleChillModeClick = () => {
+    setIsChillMode(!isChillMode);
+  };
+
+  const [isInfo, setIsInfo] = useState(false);
+
+  const handleOpenInfo: any = () => {
+    setIsInfo(!isInfo);
+  };
 
   console.log("isContestCategories", isContestCategories);
+  console.log("isChillMode :>> ", isChillMode);
 
   const CategoryArray: Category[] = [
     {
@@ -89,6 +111,31 @@ export default function Categories({
             {cat.title}
           </div>
         ))}
+      </div>
+      <div className="flex flex-col items-center text-neutral-700 fade-in mb-2">
+        <div className="flex flex-row gap-2 text-xl items-center">
+          {!isChillMode ? (
+            <CheckBoxOutlineBlankIcon
+              onClick={handleChillModeClick}
+              className="cursor-pointer"
+            />
+          ) : (
+            <CheckBoxRoundedIcon
+              onClick={handleChillModeClick}
+              className="cursor-pointer"
+            />
+          )}
+          <p>Chill mode</p>
+          <HelpOutlineOutlinedIcon
+            className="w-5 cursor-pointer hover:text-gray-default"
+            onClick={handleOpenInfo}
+          />
+        </div>
+        {isInfo ? (
+          <p className="text-sm absolute mt-7 italic text-brick-light  ">
+            Chill mode removes time limit.
+          </p>
+        ) : null}
       </div>
       <div
         className="button-prm bg-gray-default hover:bg-gray-light text-neutral-50 text-2xl rounded-md p-3

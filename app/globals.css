@@ -77,7 +77,28 @@ background: rgb(248, 248, 255);
   }
 }
 
-#myBar {
-  height: 24px;
-    width: 0
+.progress-bar {
+  border-radius: 4px;
+}
+
+.progress-moved .progress-bar {
+  animation: progressAnimation 10s linear;
+}
+
+@keyframes progressAnimation {
+  0% {
+    width: 100%;
+    background-color: #77b300;
+  }
+
+  50% {
+    width: 50%;
+    background-color: #e69900;
+  }
+
+
+  100% {
+    width: 0%;
+    background-color: #ff4000;
+  }
 }

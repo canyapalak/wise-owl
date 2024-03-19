@@ -6,10 +6,12 @@ import Image from "next/image";
 import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
 import Spinner from "./Spinner";
+import CountdownBar from "./CountdownBar";
 
 export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   const pickedCategoryKeyword = useContext(CategoryContext);
   const pickedCategoryTitle = useContext(CategoryContext);
+  const { isChillMode } = useContext(CategoryContext);
   const [generatedQuestion, setGeneratedQuestion] =
     useState<formattedQuestion | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -35,6 +37,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   }, []);
 
   console.log("loading :>> ", loading);
+  console.log("selectedOption :>> ", selectedOption);
 
   const handleOptionClick = (optValue: string) => {
     if (selectedOption === null) {
@@ -61,6 +64,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
     pickedCategoryKeyword.pickedCategoryKeyword
   );
   console.log("pickedCategoryTitle", pickedCategoryTitle.pickedCategoryTitle);
+  console.log("isChillMode", isChillMode);
 
   const generateQuestion = async (pickedCategoryObject: {
     pickedCategoryKeyword: string;
@@ -156,12 +160,20 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
       <div className="text-center">
         {!loading && generatedQuestion?.question !== "AI is confused :/" && (
           <p
-            className="text-lg px-2 py-1
+            className="text-lg px-2 py-1 mb-2
        text-center items-center fade-in text-mustard-default"
           >
             Question {questionCount + 1}
           </p>
         )}
+
+        {!isChillMode &&
+        !loading &&
+        !selectedOption &&
+        generatedQuestion?.question !== "AI is confused :/" ? (
+          <CountdownBar />
+        ) : null}
+
         {loading ? (
           <Spinner />
         ) : (
