@@ -18,6 +18,8 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [questionCount, setQuestionCount] = useState<number>(0);
+  const [isTimeOut, setIsTimeOut] = useState<boolean>(false);
+  let timeout: NodeJS.Timeout;
 
   useEffect(() => {
     setIsCorrect(null);
@@ -36,19 +38,33 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!isChillMode) {
+      timeout = setTimeout(() => {
+        setIsTimeOut(true);
+        setIsCorrect(false);
+        console.log("Time is out!");
+      }, 10000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [generatedQuestion?.question]);
+
   console.log("loading :>> ", loading);
   console.log("selectedOption :>> ", selectedOption);
 
   const handleOptionClick = (optValue: string) => {
-    if (selectedOption === null) {
+    if (selectedOption === null && !isTimeOut) {
       setSelectedOption(optValue);
       setIsCorrect(optValue === String(generatedQuestion?.correctOption));
+      clearTimeout(timeout);
     }
   };
 
   const handleNewQuestion = async () => {
     setLoading(true);
     setSelectedOption(null);
+    setIsTimeOut(false);
     await generateQuestion(pickedCategoryKeyword);
     if (
       generatedQuestion &&
@@ -65,6 +81,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   );
   console.log("pickedCategoryTitle", pickedCategoryTitle.pickedCategoryTitle);
   console.log("isChillMode", isChillMode);
+  console.log("isTimeOut", isTimeOut);
 
   const generateQuestion = async (pickedCategoryObject: {
     pickedCategoryKeyword: string;
@@ -170,6 +187,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
         {!isChillMode &&
         !loading &&
         !selectedOption &&
+        !isTimeOut &&
         generatedQuestion?.question !== "AI is confused :/" ? (
           <CountdownBar />
         ) : null}
@@ -180,7 +198,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
           generatedQuestion && (
             <div className="flex flex-wrap flex-col items-center fade-in px-2">
               <span className="">{generatedQuestion.question}</span>
-              {selectedOption !== null && (
+              {selectedOption !== null || isTimeOut ? (
                 <div>
                   {isCorrect ? (
                     <div className="text-xl mt-4 text-green-default">
@@ -193,7 +211,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
                     </div>
                   )}
                 </div>
-              )}
+              ) : null}
               <div
                 className={`flex flex-wrap gap-4 justify-center flex-col items-center mb-6 ${
                   generatedQuestion?.question === "AI is confused :/"
@@ -213,7 +231,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
                           : "bg-red-default"
                         : "bg-mustard-default"
                     } ${
-                      selectedOption === null
+                      selectedOption === null && !isTimeOut
                         ? "hover:bg-mustard-light"
                         : selectedOption === optValue
                         ? isCorrect
@@ -221,7 +239,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
                           : "hover:bg-red-default"
                         : ""
                     } text-neutral-50 text-2xl rounded-md p-3 ${
-                      selectedOption === null && "cursor-pointer"
+                      selectedOption === null && !isTimeOut && "cursor-pointer"
                     } w-56 sm:w-64 text-center shadow-lg shadow-zinc-400`}
                     onClick={() => handleOptionClick(optValue)}
                   >
@@ -229,15 +247,14 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
                   </div>
                 ))}
               </div>
-              {selectedOption &&
-                generatedQuestion?.question !== "AI is confused :/" && (
-                  <button
-                    className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
-                    onClick={handleNewQuestion}
-                  >
-                    Next
-                  </button>
-                )}
+              {selectedOption !== null || isTimeOut ? (
+                <button
+                  className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
+                  onClick={handleNewQuestion}
+                >
+                  Next
+                </button>
+              ) : null}
             </div>
           )
         )}
