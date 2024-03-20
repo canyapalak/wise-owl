@@ -151,7 +151,7 @@ export default function Categories({
           />
         </div>
         {isInfo ? (
-          <p className="text-sm absolute mt-7 italic text-brick-light  ">
+          <p className="text-sm absolute mt-7 italic text-gray-default  ">
             Chill mode removes time limit.
           </p>
         ) : null}

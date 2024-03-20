@@ -147,7 +147,7 @@ export default function Contest({
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [{ role: "assistant", content: promptText }],
-        temperature: 1.5,
+        temperature: 0.8,
         max_tokens: 200,
       }),
     };
