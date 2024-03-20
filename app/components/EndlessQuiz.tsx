@@ -138,7 +138,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [{ role: "assistant", content: promptText }],
-        temperature: 0.8,
+        temperature: 0.9,
         max_tokens: 200,
       }),
     };
