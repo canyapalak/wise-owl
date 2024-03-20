@@ -7,6 +7,7 @@ import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
 import { ScoreContext } from "../context/ScoreContext";
 import Spinner from "./Spinner";
+import CountdownBar from "./CountdownBar";
 
 export default function Contest({
   closeContest,
@@ -16,11 +17,14 @@ export default function Contest({
   const pickedCategoryTitle = useContext(CategoryContext);
   const [generatedQuestion, setGeneratedQuestion] =
     useState<formattedQuestion | null>(null);
+  const { isChillMode } = useContext(CategoryContext);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [questionCount, setQuestionCount] = useState<number>(0);
   const { score, setScore } = useContext(ScoreContext);
+  const [isTimeOut, setIsTimeOut] = useState<boolean>(false);
+  let timeout: NodeJS.Timeout;
 
   useEffect(() => {
     setScore(0);
@@ -40,10 +44,22 @@ export default function Contest({
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!isChillMode) {
+      timeout = setTimeout(() => {
+        setIsTimeOut(true);
+        setIsCorrect(false);
+        console.log("Time is out!");
+      }, 10000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [generatedQuestion?.question]);
+
   console.log("loading :>> ", loading);
 
   const handleOptionClick = (optValue: string) => {
-    if (selectedOption === null) {
+    if (selectedOption === null && !isTimeOut) {
       setSelectedOption(optValue);
       setIsCorrect((prevIsCorrect) => {
         const newIsCorrect =
@@ -53,6 +69,7 @@ export default function Contest({
         }
         return newIsCorrect;
       });
+      clearTimeout(timeout);
     }
   };
 
@@ -62,6 +79,7 @@ export default function Contest({
     if (questionCount < 10) {
       setLoading(true);
       setSelectedOption(null);
+      setIsTimeOut(false);
       await generateQuestion(pickedCategoryKeyword);
       if (
         generatedQuestion &&
@@ -86,6 +104,8 @@ export default function Contest({
   );
   console.log("pickedCategoryTitle", pickedCategoryTitle.pickedCategoryTitle);
   console.log("questionCount", questionCount);
+  console.log("isChillMode", isChillMode);
+  console.log("isTimeOut", isTimeOut);
 
   const generateQuestion = async (pickedCategoryObject: {
     pickedCategoryKeyword: string;
@@ -174,6 +194,18 @@ export default function Contest({
               Question {questionCount + 1} of 10
             </p>
           )}
+
+        {!isChillMode &&
+        !loading &&
+        !selectedOption &&
+        !isTimeOut &&
+        questionCount !== 10 &&
+        generatedQuestion?.question !== "AI is confused :/" ? (
+          <div className="w-full sm:min-w-[300px] md:min-w-[395px] lg:min-w-[545px] xl:min-w-[700px] mx-auto mb-4">
+            <CountdownBar />
+          </div>
+        ) : null}
+
         {loading ? (
           <Spinner />
         ) : (
@@ -181,7 +213,7 @@ export default function Contest({
           generatedQuestion && (
             <div className="flex flex-wrap flex-col items-center fade-in px-2">
               <span className="">{generatedQuestion.question}</span>
-              {selectedOption !== null && (
+              {selectedOption !== null || isTimeOut ? (
                 <div>
                   {isCorrect ? (
                     <div className="text-xl mt-4 text-green-default">
@@ -194,7 +226,7 @@ export default function Contest({
                     </div>
                   )}
                 </div>
-              )}
+              ) : null}
               <div
                 className={`flex flex-wrap gap-4 justify-center flex-col items-center mb-6 ${
                   generatedQuestion?.question === "AI is confused :/"
@@ -214,7 +246,7 @@ export default function Contest({
                           : "bg-red-default"
                         : "bg-mustard-default"
                     } ${
-                      selectedOption === null
+                      selectedOption === null && !isTimeOut
                         ? "hover:bg-mustard-light"
                         : selectedOption === optValue
                         ? isCorrect
@@ -222,7 +254,7 @@ export default function Contest({
                           : "hover:bg-red-default"
                         : ""
                     } text-neutral-50 text-2xl rounded-md p-3 ${
-                      selectedOption === null && "cursor-pointer"
+                      selectedOption === null && !isTimeOut && "cursor-pointer"
                     } w-56 sm:w-64 text-center shadow-lg shadow-zinc-400`}
                     onClick={() => handleOptionClick(optValue)}
                   >
@@ -230,15 +262,14 @@ export default function Contest({
                   </div>
                 ))}
               </div>
-              {selectedOption &&
-                generatedQuestion?.question !== "AI is confused :/" && (
-                  <div
-                    className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
-                    onClick={handleNewQuestion}
-                  >
-                    Next
-                  </div>
-                )}
+              {selectedOption !== null || isTimeOut ? (
+                <button
+                  className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
+                  onClick={handleNewQuestion}
+                >
+                  Next
+                </button>
+              ) : null}
             </div>
           )
         )}

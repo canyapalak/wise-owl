@@ -27,6 +27,10 @@ export default function Categories({
   };
 
   const [isInfo, setIsInfo] = useState(false);
+  const [isCategoryPicked, setIsCategoryPicked] = useState(false);
+  const [clickedCategoryButton, setClickedCategoryButton] = useState<
+    string | null
+  >(null);
 
   const handleOpenInfo: any = () => {
     setIsInfo(!isInfo);
@@ -34,6 +38,7 @@ export default function Categories({
 
   console.log("isContestCategories", isContestCategories);
   console.log("isChillMode :>> ", isChillMode);
+  console.log("clickedCategoryButton :>> ", clickedCategoryButton);
 
   const CategoryArray: Category[] = [
     {
@@ -82,13 +87,23 @@ export default function Categories({
   const handleEndlessCategoryClick = (keyword: string, title: string) => {
     setPickedCategoryKeyword(keyword);
     setPickedCategoryTitle(title);
-    closeCategories();
-    openEndlessQuiz();
+    setIsCategoryPicked(true);
+    setClickedCategoryButton(title);
   };
 
   const handleContestCategoryClick = (keyword: string, title: string) => {
     setPickedCategoryKeyword(keyword);
     setPickedCategoryTitle(title);
+    setIsCategoryPicked(true);
+    setClickedCategoryButton(title);
+  };
+
+  const handleEndlessStartClick = () => {
+    closeCategories();
+    openEndlessQuiz();
+  };
+
+  const handleContestStartClick = () => {
     closeCategories();
     openContest();
   };
@@ -100,8 +115,12 @@ export default function Categories({
         {CategoryArray.map((cat) => (
           <div
             key={cat.id}
-            className="button-prm bg-navy-default hover:bg-navy-light text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer w-40 text-center shadow-lg shadow-zinc-400"
+            className={`button-prm bg-navy-default text-neutral-50 text-2xl rounded-md p-3
+              cursor-pointer w-40 text-center shadow-lg shadow-zinc-400 ${
+                clickedCategoryButton && clickedCategoryButton === cat.title
+                  ? "button-prm-active bg-navy-light "
+                  : ""
+              }`}
             onClick={() =>
               !isContestCategories
                 ? handleEndlessCategoryClick(cat.keyword, cat.title)
@@ -137,12 +156,27 @@ export default function Categories({
           </p>
         ) : null}
       </div>
-      <div
-        className="button-prm bg-gray-default hover:bg-gray-light text-neutral-50 text-2xl rounded-md p-3
-          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-2"
-        onClick={closeCategories}
-      >
-        {isContestCategories ? "Home" : "Back"}
+      <div className="flex flex-col gap-3">
+        <div
+          className={`button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3
+  cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 ${
+    isCategoryPicked ? "" : "opacity-50 pointer-events-none"
+  }`}
+          onClick={() =>
+            !isContestCategories
+              ? handleEndlessStartClick()
+              : handleContestStartClick()
+          }
+        >
+          Start
+        </div>
+        <div
+          className="button-prm bg-gray-default hover:bg-gray-light text-neutral-50 text-2xl rounded-md p-3
+          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
+          onClick={closeCategories}
+        >
+          {isContestCategories ? "Home" : "Back"}
+        </div>
       </div>
     </div>
   );

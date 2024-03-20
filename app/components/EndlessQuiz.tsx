@@ -174,14 +174,14 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
           {pickedCategoryTitle.pickedCategoryTitle}
         </span>
       </div>
-      <div className="text-center">
+      <div className="text-center flex flex-col">
         {!loading && generatedQuestion?.question !== "AI is confused :/" && (
-          <p
+          <div
             className="text-lg px-2 py-1 mb-2
        text-center items-center fade-in text-mustard-default"
           >
             Question {questionCount + 1}
-          </p>
+          </div>
         )}
 
         {!isChillMode &&
@@ -189,7 +189,9 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
         !selectedOption &&
         !isTimeOut &&
         generatedQuestion?.question !== "AI is confused :/" ? (
-          <CountdownBar />
+          <div className="w-full sm:min-w-[300px] md:min-w-[395px] lg:min-w-[545px] xl:min-w-[700px] mx-auto mb-4">
+            <CountdownBar />
+          </div>
         ) : null}
 
         {loading ? (

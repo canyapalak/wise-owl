@@ -25,6 +25,12 @@ background: white
   transition: 0.20s;
 }
 
+.button-prm-active {
+    -webkit-transform: translateY(-1px);
+      transform: rotate(-2deg);
+      transition: 0.20s;
+}
+
 .modal-main {
   font-family: "Righteous";
 }
