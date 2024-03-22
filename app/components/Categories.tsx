@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { CategoriesProps, Category } from "../types";
 import { CategoryContext } from "../context/CategoryContext";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxRoundedIcon from "@mui/icons-material/CheckBoxRounded";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
+import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export default function Categories({
   closeCategories,
@@ -134,18 +134,18 @@ export default function Categories({
       <div className="flex flex-col items-center text-neutral-700 fade-in mb-2">
         <div className="flex flex-row gap-2 text-xl items-center">
           {!isChillMode ? (
-            <CheckBoxOutlineBlankIcon
+            <ToggleOffOutlinedIcon
               onClick={handleChillModeClick}
-              className="cursor-pointer"
+              className="cursor-pointer text-3xl"
             />
           ) : (
-            <CheckBoxRoundedIcon
+            <ToggleOnOutlinedIcon
               onClick={handleChillModeClick}
-              className="cursor-pointer"
+              className="cursor-pointer text-3xl"
             />
           )}
           <p>Chill mode</p>
-          <HelpOutlineOutlinedIcon
+          <InfoOutlinedIcon
             className="w-5 cursor-pointer hover:text-gray-default"
             onClick={handleOpenInfo}
           />

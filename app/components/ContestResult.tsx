@@ -106,7 +106,7 @@ export default function ContestResult({
           alt="animal"
           className="w-36 h-36 float-left items-center"
         />
-        {resultText}
+        <p className="text-center">{resultText}</p>
       </div>
       <div
         className="button-prm bg-gray-default text-neutral-50 text-2xl rounded-md p-3

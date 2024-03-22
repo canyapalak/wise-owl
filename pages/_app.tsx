@@ -5,7 +5,7 @@ import Head from "next/head";
 import Header from "@/app/components/Header";
 import { CategoryProvider } from "@/app/context/CategoryContext";
 import { ScoreProvider } from "@/app/context/ScoreContext";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import CreditsModal from "@/app/components/CreditsModal";
 
 export default function MyApp({ Component, pageProps }: any) {
@@ -21,9 +21,9 @@ export default function MyApp({ Component, pageProps }: any) {
         <link rel="icon" href="./favicon.ico" />
         <title>Wise Owl</title>
       </Head>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-1">
         <p className="text-sm m-2">Version: 1.0</p>
-        <HelpOutlineOutlinedIcon
+        <InfoOutlinedIcon
           className="w-5 mt-1.5 cursor-pointer hover:text-gray-default"
           onClick={handleOpenModal}
         />

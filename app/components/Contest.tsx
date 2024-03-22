@@ -201,7 +201,7 @@ export default function Contest({
         !isTimeOut &&
         questionCount !== 10 &&
         generatedQuestion?.question !== "AI is confused :/" ? (
-          <div className="w-full sm:min-w-[300px] md:min-w-[395px] lg:min-w-[545px] xl:min-w-[700px] mx-auto mb-4">
+          <div className="w-full sm:w-[370px] md:w-[395px] lg:w-[545px] xl:w-[640px] 2xl:w-[800px] mx-auto mb-4">
             <CountdownBar />
           </div>
         ) : null}
