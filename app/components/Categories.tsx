@@ -44,17 +44,18 @@ export default function Categories({
     {
       id: 1,
       title: "Cinema",
-      keyword: "cinema",
+      keyword: "cinema culture, movies, actors, directors and movie awards",
     },
     {
       id: 2,
       title: "Games",
-      keyword: "video games",
+      keyword:
+        "famous video games, video game culture, video game companies and fun facts about video games",
     },
     {
       id: 3,
       title: "History",
-      keyword: "history",
+      keyword: "history, famous historical figures and events",
     },
     {
       id: 4,
@@ -70,17 +71,19 @@ export default function Categories({
     {
       id: 6,
       title: "Technology",
-      keyword: "technology",
+      keyword:
+        "technology, computer science, technology companies and technological products",
     },
     {
       id: 7,
       title: "Travel",
-      keyword: "travel and tourism",
+      keyword: "travel, tourism, culture, cities and countries",
     },
     {
       id: 8,
       title: "Everything!",
-      keyword: "fun facts",
+      keyword:
+        "everything, including cinema, games, literature, sports, music, food, culture, video games, history, technology, travel, life and fun facts",
     },
   ];
 

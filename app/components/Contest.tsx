@@ -187,24 +187,24 @@ export default function Contest({
         {!loading &&
           generatedQuestion?.question !== "AI is confused :/" &&
           questionCount !== 10 && (
-            <p
-              className="text-lg px-2 py-1
-       text-center items-center fade-in text-mustard-default"
-            >
-              Question {questionCount + 1} of 10
-            </p>
+            <div className="mb-2">
+              <div
+                className="text-lg px-2 py-1
+       text-center mb-2 items-center fade-in text-mustard-default"
+              >
+                Question {questionCount + 1} of 10
+              </div>
+              {!isChillMode &&
+              !loading &&
+              !selectedOption &&
+              !isTimeOut &&
+              generatedQuestion?.question !== "AI is confused :/" ? (
+                <div className="w-full sm:min-w-[300px] md:min-w-[395px] lg:min-w-[535px] xl:min-w-[700px] 2xl:min-w-[830px] mx-auto mb-4">
+                  <CountdownBar />
+                </div>
+              ) : null}
+            </div>
           )}
-
-        {!isChillMode &&
-        !loading &&
-        !selectedOption &&
-        !isTimeOut &&
-        questionCount !== 10 &&
-        generatedQuestion?.question !== "AI is confused :/" ? (
-          <div className="w-full sm:w-[370px] md:w-[395px] lg:w-[545px] xl:w-[640px] 2xl:w-[800px] mx-auto mb-4">
-            <CountdownBar />
-          </div>
-        ) : null}
 
         {loading ? (
           <Spinner />

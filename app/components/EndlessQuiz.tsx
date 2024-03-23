@@ -7,6 +7,7 @@ import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
 import Spinner from "./Spinner";
 import CountdownBar from "./CountdownBar";
+import { ScoreContext } from "../context/ScoreContext";
 
 export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   const pickedCategoryKeyword = useContext(CategoryContext);
@@ -18,10 +19,12 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [questionCount, setQuestionCount] = useState<number>(0);
+  const { score, setScore } = useContext(ScoreContext);
   const [isTimeOut, setIsTimeOut] = useState<boolean>(false);
   let timeout: NodeJS.Timeout;
 
   useEffect(() => {
+    setScore(0);
     setIsCorrect(null);
     setQuestionCount(0);
     const fetchData = async () => {
@@ -57,6 +60,14 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
     if (selectedOption === null && !isTimeOut) {
       setSelectedOption(optValue);
       setIsCorrect(optValue === String(generatedQuestion?.correctOption));
+      setIsCorrect((prevIsCorrect) => {
+        const newIsCorrect =
+          optValue === String(generatedQuestion?.correctOption);
+        if (newIsCorrect) {
+          setScore(score + 1);
+        }
+        return newIsCorrect;
+      });
       clearTimeout(timeout);
     }
   };
@@ -176,23 +187,28 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
       </div>
       <div className="text-center flex flex-col">
         {!loading && generatedQuestion?.question !== "AI is confused :/" && (
-          <div
-            className="text-lg px-2 py-1 mb-2
+          <div className="flex flex-col mb-2">
+            <div
+              className="text-lg px-2 py-1
        text-center items-center fade-in text-mustard-default"
-          >
-            Question {questionCount + 1}
+            >
+              Question {questionCount + 1}
+            </div>
+            <div className="text-sm flex flex-row gap-1 mb-2 justify-center">
+              (<p className="text-brick-default ">{score}</p> correct{" "}
+              {score <= 1 ? "answer" : "answers"})
+            </div>
+            {!isChillMode &&
+            !loading &&
+            !selectedOption &&
+            !isTimeOut &&
+            generatedQuestion?.question !== "AI is confused :/" ? (
+              <div className="w-full sm:min-w-[300px] md:min-w-[395px] lg:min-w-[535px] xl:min-w-[700px] 2xl:min-w-[830px] mx-auto mb-4">
+                <CountdownBar />
+              </div>
+            ) : null}
           </div>
         )}
-
-        {!isChillMode &&
-        !loading &&
-        !selectedOption &&
-        !isTimeOut &&
-        generatedQuestion?.question !== "AI is confused :/" ? (
-          <div className="w-full sm:min-w-[300px] md:min-w-[395px] lg:min-w-[545px] xl:min-w-[700px] mx-auto mb-4">
-            <CountdownBar />
-          </div>
-        ) : null}
 
         {loading ? (
           <Spinner />
