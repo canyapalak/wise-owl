@@ -195,7 +195,7 @@ export default function EndlessQuiz({ closeEndlessQuiz }: EndlessQuizProps) {
               Question {questionCount + 1}
             </div>
             <div className="text-sm flex flex-row gap-1 mb-2 justify-center">
-              (<p className="text-brick-default ">{score}</p> correct{" "}
+              (<p className="text-brick-default ">({score}</p> correct{" "}
               {score <= 1 ? "answer" : "answers"})
             </div>
             {!isChillMode &&
