@@ -43,7 +43,9 @@ background: rgb(248, 248, 255);
 }
 
 .modal-dash {
-  background-color: white;
+  background: url('../public/assets/tile-bg.png');
+    background-repeat: repeat;
+    background-color: white;
 }
 
 .category-tag {
