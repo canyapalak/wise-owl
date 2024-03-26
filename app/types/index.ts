@@ -43,6 +43,15 @@ export interface ScoreProviderProps {
   score: number | null;
   setScore: React.Dispatch<React.SetStateAction<number | null>>;
 }
+
+export interface CustomQuizContextProps {
+  pickedCategoryKeyword: string | null;
+  setPickedCategoryKeyword: React.Dispatch<React.SetStateAction<string | null>>;
+  pickedCategoryTitle: string | null;
+  setPickedCategoryTitle: React.Dispatch<React.SetStateAction<string | null>>;
+  isChillMode: boolean | null;
+  setIsChillMode: React.Dispatch<React.SetStateAction<boolean | null>>;
+}
 export interface formattedQuestion {
   question: string;
   options: string[];

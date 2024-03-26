@@ -5,6 +5,7 @@ import Head from "next/head";
 import Header from "@/app/components/Header";
 import { CategoryProvider } from "@/app/context/CategoryContext";
 import { ScoreProvider } from "@/app/context/ScoreContext";
+import { CustomQuizProvider } from "@/app/context/CustomQuizContext";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import CreditsModal from "@/app/components/CreditsModal";
 
@@ -36,9 +37,11 @@ export default function MyApp({ Component, pageProps }: any) {
       border-spacing-20 border-4 border-neutral-600 rounded-xl py-6 px-6 w-10/12 md:w-3/4 mb-6 container-dash"
         >
           <CategoryProvider>
-            <ScoreProvider>
-              <Component {...pageProps} />
-            </ScoreProvider>
+            <CustomQuizProvider>
+              <ScoreProvider>
+                <Component {...pageProps} />
+              </ScoreProvider>
+            </CustomQuizProvider>
           </CategoryProvider>
         </div>
       </main>
