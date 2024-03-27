@@ -2,6 +2,7 @@ export interface WelcomeButtonsProps {
   openCategories: () => void;
   openInfo: () => void;
   openContestInfo: () => void;
+  openCustomQuizSet: () => void;
 }
 export interface CategoriesProps {
   closeCategories: () => void;
@@ -26,8 +27,11 @@ export interface ContestInfoProps {
 export interface ContestResultProps {
   closeContestResult: () => void;
 }
+
+export interface CustomQuizSetProps {
+  closeCustomQuizSet: () => void;
+}
 export interface Category {
-  id: number;
   title: string;
   keyword: string;
 }

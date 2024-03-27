@@ -4,6 +4,7 @@ export default function WelcomeButtons({
   openCategories,
   openInfo,
   openContestInfo,
+  openCustomQuizSet,
 }: WelcomeButtonsProps) {
   return (
     <>
@@ -25,6 +26,7 @@ export default function WelcomeButtons({
         <div
           className="button-prm bg-brick-default text-neutral-50 text-2xl rounded-md p-3
           cursor-pointer hover:bg-brick-light w-48 text-center shadow-lg shadow-zinc-400"
+          onClick={openCustomQuizSet}
         >
           Custom Quiz
         </div>

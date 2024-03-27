@@ -42,45 +42,37 @@ export default function Categories({
 
   const CategoryArray: Category[] = [
     {
-      id: 1,
       title: "Cinema",
       keyword: "cinema culture, movies, actors, directors and movie awards",
     },
     {
-      id: 2,
       title: "Games",
       keyword:
         "famous video games, video game culture, video game companies and fun facts about video games",
     },
     {
-      id: 3,
       title: "History",
       keyword: "history, famous historical figures and events",
     },
     {
-      id: 4,
       title: "Literature",
       keyword: "literature, books and writers",
     },
     {
-      id: 5,
       title: "Sports",
       keyword:
         "sports, famous players and sport clubs, but not mostly from USA",
     },
     {
-      id: 6,
       title: "Technology",
       keyword:
         "technology, computer science, technology companies and technological products",
     },
     {
-      id: 7,
       title: "Travel",
       keyword: "travel, tourism, culture, cities and countries",
     },
     {
-      id: 8,
       title: "Everything!",
       keyword:
         "everything, including cinema, games, literature, sports, music, food, culture, video games, history, technology, travel, life and fun facts",
@@ -115,9 +107,9 @@ export default function Categories({
     <div className="flex flex-col gap-6 items-center">
       <p className="text-center text-neutral-700 fade-in">Pick a category!</p>
       <div className="flex flex-wrap gap-4 justify-center fade-in">
-        {CategoryArray.map((cat) => (
+        {CategoryArray.map((cat, index) => (
           <div
-            key={cat.id}
+            key={index}
             className={`button-prm bg-navy-default text-neutral-50 text-2xl rounded-md p-3
               cursor-pointer w-40 text-center shadow-lg shadow-zinc-400 ${
                 clickedCategoryButton && clickedCategoryButton === cat.title

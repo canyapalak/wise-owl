@@ -6,6 +6,7 @@ import Info from "@/app/components/Info";
 import WelcomeButtons from "@/app/components/WelcomeButtons";
 import ContestInfo from "@/app/components/ContestInfo";
 import ContestResult from "@/app/components/ContestResult";
+import CustomQuizSet from "@/app/components/CustomQuizSet";
 
 export default function Home() {
   const [isInfo, setIsInfo] = useState(false);
@@ -15,6 +16,7 @@ export default function Home() {
   const [isContestInfo, setIsContestInfo] = useState(false);
   const [isContestCategories, setIsContestCategories] = useState(false);
   const [isContestResult, setIsContestResult] = useState(false);
+  const [isCustomQuizSet, setIsCustomQuizSet] = useState(false);
 
   const openInfo = (): void => {
     setIsInfo(true);
@@ -68,6 +70,14 @@ export default function Home() {
     setIsContestResult(false);
   };
 
+  const openCustomQuizSet = (): void => {
+    setIsCustomQuizSet(true);
+  };
+
+  const closeCustomQuizSet = (): void => {
+    setIsCustomQuizSet(false);
+  };
+
   console.log("isContestResult :>> ", isContestResult);
 
   return (
@@ -77,18 +87,21 @@ export default function Home() {
         !isCategories &&
         !isContestInfo &&
         !isContest &&
+        !isCustomQuizSet &&
         !isEndlessQuiz && <Info closeInfo={closeInfo} />}
       {!isInfo &&
         !isContestResult &&
         !isCategories &&
         !isContestInfo &&
         !isContest &&
+        !isCustomQuizSet &&
         isEndlessQuiz && <EndlessQuiz closeEndlessQuiz={closeEndlessQuiz} />}
       {!isInfo &&
         !isContestResult &&
         !isCategories &&
         !isEndlessQuiz &&
         isContestInfo &&
+        !isCustomQuizSet &&
         !isContest && (
           <ContestInfo
             closeContestInfo={closeContestInfo}
@@ -100,6 +113,7 @@ export default function Home() {
         !isCategories &&
         !isEndlessQuiz &&
         !isContestInfo &&
+        !isCustomQuizSet &&
         isContest && (
           <Contest
             closeContest={closeContest}
@@ -111,6 +125,7 @@ export default function Home() {
         isCategories &&
         !isContestInfo &&
         !isContest &&
+        !isCustomQuizSet &&
         !isEndlessQuiz && (
           <Categories
             closeCategories={closeCategories}
@@ -124,11 +139,13 @@ export default function Home() {
         !isCategories &&
         !isContestInfo &&
         !isContest &&
+        !isCustomQuizSet &&
         !isEndlessQuiz && (
           <WelcomeButtons
             openCategories={openCategories}
             openInfo={openInfo}
             openContestInfo={openContestInfo}
+            openCustomQuizSet={openCustomQuizSet}
           />
         )}
       {!isInfo &&
@@ -136,6 +153,16 @@ export default function Home() {
         !isEndlessQuiz &&
         !isContestInfo &&
         !isContest &&
+        !isContestResult &&
+        isCustomQuizSet && (
+          <CustomQuizSet closeCustomQuizSet={closeCustomQuizSet} />
+        )}
+      {!isInfo &&
+        !isCategories &&
+        !isEndlessQuiz &&
+        !isContestInfo &&
+        !isContest &&
+        !isCustomQuizSet &&
         isContestResult && (
           <ContestResult closeContestResult={closeContestResult} />
         )}
