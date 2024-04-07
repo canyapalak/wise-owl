@@ -99,6 +99,9 @@ export default function CustomQuizSet({
             </div>
           ))}
         </div>
+        <div>
+          <p>2. Create new categories if you want</p>
+        </div>
       </div>
       <div
         className="button-prm bg-gray-default text-neutral-50 text-2xl rounded-md p-3
