@@ -80,9 +80,9 @@ export default function CustomQuizSet({
 
   return (
     <div className="flex flex-col gap-6 items-center text-neutral-700">
-      <p className="text-center fade-in">Here you can create your own quiz!</p>
+      <p className="text-center fade-in">It is time to create your own quiz!</p>
       <div className="flex flex-col gap-4 text-xl fade-in">
-        <p>1. Pick any categories you want</p>
+        <p>1. Pick any categories you want:</p>
         <div className="flex flex-wrap gap-2 justify-center fade-in">
           {CategoryArray.map((cat, index) => (
             <div
@@ -100,7 +100,7 @@ export default function CustomQuizSet({
           ))}
         </div>
         <div>
-          <p>2. Create new categories if you want</p>
+          <p>2. Create new categories if you want:</p>
         </div>
       </div>
       <div
