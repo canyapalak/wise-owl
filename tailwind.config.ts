@@ -21,7 +21,7 @@ const config: Config = {
         },
         navy: {
           default: "#008fb3",
-          light: "#00a3cc",
+          light: "#19ACD1",
         },
         mustard: {
           default: "#cc8800",

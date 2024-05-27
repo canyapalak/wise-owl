@@ -82,15 +82,15 @@ export default function CustomQuizSet({
     <div className="flex flex-col gap-6 items-center text-neutral-700">
       <p className="text-center fade-in">It is time to create your own quiz!</p>
       <div className="flex flex-col gap-4 text-xl fade-in">
-        <p>1. Pick any categories you want:</p>
+        <p>1. Pick any category or categories you want:</p>
         <div className="flex flex-wrap gap-2 justify-center fade-in">
           {CategoryArray.map((cat, index) => (
             <div
               key={index}
-              className={` bg-navy-default hover:bg-navy-light text-neutral-50 text-xl rounded-md pt-1 px-3
+              className={`bg-navy-default button-prm text-neutral-50 text-xl rounded-md pt-1 px-3
               cursor-pointer w-25 h-10 shadow-lg shadow-zinc-400 flex align-middle ${
-                clickedCategoryButton && clickedCategoryButton === cat.title
-                  ? "bg-navy-light"
+                pickedCategoryArray.some((category) => category.title === cat.title)
+                  ? "bg-navy-light button-prm-active"
                   : ""
               }`}
               onClick={() => handleCategoryClick(cat.keyword, cat.title)}

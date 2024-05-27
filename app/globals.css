@@ -11,14 +11,15 @@
 }
 
 body {
-background: rgb(248, 248, 255);
-  background: radial-gradient(circle, rgba(248, 248, 255, 1) 25%, rgba(236, 236, 236, 1) 79%);
+  background: rgb(235, 237, 242);
+  background: radial-gradient(circle, rgba(235, 237, 242, 1) 25%, rgba(186, 211, 230, 1) 73%);
   font-family: "Righteous";
 }
+
 .container-dash {
-background: url('../public/assets/tile-bg.png');
-background-repeat: repeat;
-background-color: white;
+  background: url('../public/assets/tile-bg.png');
+  background-repeat: repeat;
+  background-color: white;
 }
 
 .button-prm:hover {
@@ -28,9 +29,9 @@ background-color: white;
 }
 
 .button-prm-active {
-    -webkit-transform: translateY(-1px);
-      transform: rotate(-2deg);
-      transition: 0.20s;
+  -webkit-transform: translateY(-1px);
+  transform: rotate(-2deg);
+  transition: 0.20s;
 }
 
 .modal-main {
@@ -38,14 +39,14 @@ background-color: white;
 }
 
 .modal-box {
-background: rgb(248, 248, 255);
-  background: radial-gradient(circle, rgba(248, 248, 255, 1) 25%, rgba(236, 236, 236, 1) 79%);
+  background: rgb(235, 237, 242);
+  background: radial-gradient(circle, rgba(235, 237, 242, 1) 25%, rgba(186, 211, 230, 1) 73%);
 }
 
 .modal-dash {
   background: url('../public/assets/tile-bg.png');
-    background-repeat: repeat;
-    background-color: white;
+  background-repeat: repeat;
+  background-color: white;
 }
 
 .category-tag {
