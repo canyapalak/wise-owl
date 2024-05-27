@@ -96,6 +96,11 @@ body {
   animation: progressAnimation 10s linear;
 }
 
+.input-area:focus-within+.input-button,
+.input-area:focus-within .input-button {
+  border-left-color: black;
+}
+
 @keyframes progressAnimation {
   0% {
     width: 100%;

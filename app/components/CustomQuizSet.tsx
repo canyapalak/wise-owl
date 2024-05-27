@@ -102,9 +102,10 @@ export default function CustomQuizSet({
         <div className="mt-4">
           <p>2. Create new categories if you want:</p>
           <div className="flex flex-row mt-4 items-center">
-            <input type="text" className="border-[3px] border-gray-default rounded-md pl-2 pr-9 accent-rose-500 outline-none focus:border-black w-56"></input>
-            <div className="bg-purple-default text-neutral-50 text-2xl rounded-r-md
-          cursor-pointer hover:bg-purple-light w-7 h-[29px] text-center shadow-lg shadow-zinc-400 relative right-[30px]">&gt;</div>
+            <input type="text" className="border-[3px] border-gray-default rounded-md pl-2 pr-9 accent-rose-500 outline-none
+            focus:border-black w-56 input-area"></input>
+            <div className="bg-green-default text-neutral-50 text-2xl rounded-r-[4px] border-l-[3px] border-gray-default
+          cursor-pointer hover:bg-green-light w-7 h-[28.5px] text-center relative right-[30.5px] input-button">&gt;</div>
           </div>
         </div>
       </div>
