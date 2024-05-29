@@ -42,6 +42,8 @@ export interface CategoryProviderProps {
   setPickedCategoryTitle: React.Dispatch<React.SetStateAction<string | null>>;
   isChillMode: boolean | null;
   setIsChillMode: React.Dispatch<React.SetStateAction<boolean | null>>;
+  questionAmount: number | null;
+  setQuestionAmount: React.Dispatch<React.SetStateAction<number | null>>;
 }
 export interface ScoreProviderProps {
   score: number | null;
@@ -65,4 +67,10 @@ export interface formattedQuestion {
 export interface ModalInterface {
   open: boolean;
   setOpen: (bool: boolean) => void;
+}
+
+export interface SliderInterface {
+  event: Event;
+  value: number | number[];
+  activeThumb: number;
 }
