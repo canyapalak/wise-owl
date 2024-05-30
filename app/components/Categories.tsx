@@ -131,12 +131,12 @@ export default function Categories({
           {!isChillMode ? (
             <ToggleOffOutlinedIcon
               onClick={handleChillModeClick}
-              className="cursor-pointer text-3xl"
+              className="cursor-pointer text-4xl"
             />
           ) : (
             <ToggleOnOutlinedIcon
               onClick={handleChillModeClick}
-              className="cursor-pointer text-3xl"
+              className="cursor-pointer text-4xl text-green-default"
             />
           )}
           <p>Chill mode</p>

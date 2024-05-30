@@ -16,6 +16,7 @@ export const CategoryProvider = ({ children }: { children: ReactNode }) => {
 
   const [isChillMode, setIsChillMode] = useState<boolean | null>(false);
   const [questionAmount, setQuestionAmount] = useState<number | null>(10);
+  const [questionTime, setQuestionTime] = useState<number | null>(10);
 
   const contextValue: CategoryProviderProps = {
     pickedCategoryKeyword,
@@ -26,6 +27,8 @@ export const CategoryProvider = ({ children }: { children: ReactNode }) => {
     setIsChillMode,
     questionAmount,
     setQuestionAmount,
+    questionTime,
+    setQuestionTime,
   };
 
   return (

@@ -1,7 +1,11 @@
 import { useContext, useState } from "react";
 import { Category, CustomQuizSetProps, SliderInterface } from "../types";
 import { CategoryContext } from "../context/CategoryContext";
-import { Box, Slider } from "@mui/material";
+import { Box, Slider, useMediaQuery, useTheme } from "@mui/material";
+import { lightGreen } from "@mui/material/colors";
+import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
+import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export default function CustomQuizSet({
   closeCustomQuizSet,
@@ -13,6 +17,8 @@ export default function CustomQuizSet({
     isChillMode,
     setQuestionAmount,
     questionAmount,
+    setQuestionTime,
+    questionTime,
   } = useContext(CategoryContext);
 
   const [clickedCategoryButton, setClickedCategoryButton] = useState<
@@ -30,6 +36,22 @@ export default function CustomQuizSet({
   );
 
   const [customCategoryError, setCustomCategoryError] = useState<string>("");
+
+  const [isInfo, setIsInfo] = useState(false);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.between("xs", "sm"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
+
+  const screenWidth = () => {
+    if (isSmallScreen) {
+      return 250;
+    } else if (isMediumScreen) {
+      return 320;
+    } else {
+      return 400;
+    }
+  };
 
   const CategoryArray: Category[] = [
     {
@@ -123,16 +145,29 @@ export default function CustomQuizSet({
     );
   }
 
-  function handleSliderChange(value: number) {
-    setQuestionAmount(value);
-  }
-
   function getAriaValueText(value: number, index: number) {
+    setQuestionAmount(`${value}`);
     return `${value}`;
   }
 
+  function getAriaValueText2(value: number, index: number) {
+    setQuestionTime(`${value}`);
+    return `${value}`;
+  }
+
+  const handleChillModeClick = () => {
+    setIsChillMode(!isChillMode);
+  };
+
+  const handleOpenInfo: any = () => {
+    setIsInfo(!isInfo);
+  };
+
   console.log("pickedCategoryArray", pickedCategoryArray);
   console.log("customCategoryArray", customCategoryArray);
+  console.log("questionAmount :>> ", questionAmount);
+  console.log("questionTime", questionTime);
+  console.log("isChillMode :>> ", isChillMode);
 
   return (
     <div className="flex flex-col gap-6 items-center text-neutral-700">
@@ -188,13 +223,13 @@ export default function CustomQuizSet({
                 <div className="flex flex-row">
                   <div
                     key={index}
-                    className="bg-mustard-default text-neutral-50 text-xl rounded-md pl-3 pr-4 
+                    className="bg-navy-light button-prm-active text-neutral-50 text-xl rounded-md pl-3 pr-4 
       w-25 h-10 shadow-lg shadow-zinc-400 flex items-center relative my-auto"
                   >
                     {cat.title}
                     <div
                       className="absolute text-sm 
-    cursor-pointer text-black right-1 top-0 hover:text-gray-600"
+    cursor-pointer text-cyan-800 right-1 top-0 hover:text-cyan-950"
                       onClick={() => handleRemoveCustomCategory(cat.title)}
                     >
                       x
@@ -208,8 +243,16 @@ export default function CustomQuizSet({
         <div className="flex flex-col mt-4 gap-4">
           <p>3. How many questions do you want in your quiz?</p>
           <div>
-            <Box sx={{ width: 400 }}>
+            <Box
+              sx={{
+                screenWidth,
+              }}
+            >
               <Slider
+                sx={{
+                  color: lightGreen[700],
+                  width: screenWidth,
+                }}
                 aria-label="Questions"
                 defaultValue={10}
                 getAriaValueText={getAriaValueText}
@@ -223,13 +266,76 @@ export default function CustomQuizSet({
             </Box>
           </div>
         </div>
+        <div className="flex flex-col gap-4">
+          <p>4. How many seconds do you need for each question?</p>
+          <div>
+            <Box
+              sx={{
+                screenWidth,
+              }}
+            >
+              <Slider
+                sx={{
+                  color: lightGreen[700],
+                  width: screenWidth,
+                }}
+                aria-label="Questions"
+                defaultValue={10}
+                getAriaValueText={getAriaValueText2}
+                valueLabelDisplay="auto"
+                shiftStep={30}
+                step={1}
+                marks
+                min={5}
+                max={30}
+              />
+            </Box>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <p>5. Do you want chill mode?</p>
+          <div className="flex flex-row gap-2 align-middle">
+            {!isChillMode ? (
+              <ToggleOffOutlinedIcon
+                onClick={handleChillModeClick}
+                className="cursor-pointer text-4xl"
+              />
+            ) : (
+              <ToggleOnOutlinedIcon
+                onClick={handleChillModeClick}
+                className="cursor-pointer text-4xl text-green-default"
+              />
+            )}
+            <InfoOutlinedIcon
+              className="w-5 cursor-pointer hover:text-gray-default mt-1.5"
+              onClick={handleOpenInfo}
+            />
+            <div>
+              {isInfo ? (
+                <p className="absolute text-sm mt-2 italic text-gray-default  ">
+                  Chill mode removes time limit.
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </div>
       </div>
-      <div
-        className="button-prm bg-gray-default text-neutral-50 text-2xl rounded-md p-3
+      <div className="flex flex-col gap-3">
+        <div
+          className={`button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3
+          cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 ${
+            pickedCategoryArray.length === 0 && "opacity-50 pointer-events-none"
+          }`}
+        >
+          Next
+        </div>
+        <div
+          className="button-prm bg-gray-default text-neutral-50 text-2xl rounded-md p-3
           cursor-pointer hover:bg-gray-light w-48 text-center shadow-lg shadow-zinc-400"
-        onClick={closeCustomQuizSet}
-      >
-        Back
+          onClick={closeCustomQuizSet}
+        >
+          Back
+        </div>
       </div>
     </div>
   );

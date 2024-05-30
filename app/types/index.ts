@@ -44,6 +44,8 @@ export interface CategoryProviderProps {
   setIsChillMode: React.Dispatch<React.SetStateAction<boolean | null>>;
   questionAmount: number | null;
   setQuestionAmount: React.Dispatch<React.SetStateAction<number | null>>;
+  questionTime: number | null;
+  setQuestionTime: React.Dispatch<React.SetStateAction<number | null>>;
 }
 export interface ScoreProviderProps {
   score: number | null;
