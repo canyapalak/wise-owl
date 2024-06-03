@@ -1,33 +1,23 @@
 import { useContext, useState } from "react";
-import { Category, CustomQuizSetProps, SliderInterface } from "../types";
-import { CategoryContext } from "../context/CategoryContext";
+import { Category, CustomQuizSetProps } from "../types";
 import { Box, Slider, useMediaQuery, useTheme } from "@mui/material";
 import { lightGreen } from "@mui/material/colors";
 import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
 import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { CustomQuizContext } from "../context/CustomQuizContext";
 
 export default function CustomQuizSet({
   closeCustomQuizSet,
 }: CustomQuizSetProps) {
   const {
-    setPickedCategoryKeyword,
-    setPickedCategoryTitle,
     setIsChillMode,
     isChillMode,
+    setPickedCategoryArray,
+    pickedCategoryArray,
     setQuestionAmount,
-    questionAmount,
     setQuestionTime,
-    questionTime,
-  } = useContext(CategoryContext);
-
-  const [clickedCategoryButton, setClickedCategoryButton] = useState<
-    string | null
-  >(null);
-
-  const [pickedCategoryArray, setPickedCategoryArray] = useState<Category[]>(
-    []
-  );
+  } = useContext(CustomQuizContext);
 
   const [customCategory, setCustomCategory] = useState<string>("");
 
@@ -103,45 +93,65 @@ export default function CustomQuizSet({
       return;
     }
 
+    const categoryExists =
+      pickedCategoryArray.some(
+        (category: Category) =>
+          category.title.toLowerCase() === trimmedCategory.toLowerCase()
+      ) ||
+      customCategoryArray.some(
+        (category: Category) =>
+          category.title.toLowerCase() === trimmedCategory.toLowerCase()
+      );
+
+    if (categoryExists) {
+      setCustomCategoryError("This category already exists.");
+      return;
+    }
+
     const newCategory: Category = {
       title: trimmedCategory,
       keyword: trimmedCategory,
     };
 
-    setPickedCategoryArray((prevArray) => [...prevArray, newCategory]);
-    setCustomCategoryArray((prevArray) => [...prevArray, newCategory]);
+    setPickedCategoryArray((prevArray: Category[]) => [
+      ...prevArray,
+      newCategory,
+    ]);
+    setCustomCategoryArray((prevArray: Category[]) => [
+      ...prevArray,
+      newCategory,
+    ]);
     setCustomCategory("");
     setCustomCategoryError("");
   }
 
   const handleCategoryClick = (keyword: string, title: string) => {
-    setPickedCategoryKeyword(keyword);
-    setPickedCategoryTitle(title);
-    setClickedCategoryButton(title);
-
     const index = pickedCategoryArray.findIndex(
-      (category) => category.title === title
+      (category: Category) => category.title === title
     );
 
     if (index !== -1) {
-      setPickedCategoryArray((prevArray) =>
-        prevArray.filter((category) => category.title !== title)
+      setPickedCategoryArray((prevArray: Category[]) =>
+        prevArray.filter((category: Category) => category.title !== title)
       );
     } else {
       const pickedCategory: Category = {
         title: title,
         keyword: keyword,
       };
-      setPickedCategoryArray((prevArray) => [...prevArray, pickedCategory]);
+      setPickedCategoryArray((prevArray: Category[]) => [
+        ...prevArray,
+        pickedCategory,
+      ]);
     }
   };
 
   function handleRemoveCustomCategory(title: string) {
-    setPickedCategoryArray((prevArray) =>
-      prevArray.filter((category) => category.title !== title)
+    setPickedCategoryArray((prevArray: Category[]) =>
+      prevArray.filter((category: Category) => category.title !== title)
     );
-    setCustomCategoryArray((prevArray) =>
-      prevArray.filter((category) => category.title !== title)
+    setCustomCategoryArray((prevArray: Category[]) =>
+      prevArray.filter((category: Category) => category.title !== title)
     );
   }
 
@@ -159,15 +169,9 @@ export default function CustomQuizSet({
     setIsChillMode(!isChillMode);
   };
 
-  const handleOpenInfo: any = () => {
+  const handleOpenInfo = () => {
     setIsInfo(!isInfo);
   };
-
-  console.log("pickedCategoryArray", pickedCategoryArray);
-  console.log("customCategoryArray", customCategoryArray);
-  console.log("questionAmount :>> ", questionAmount);
-  console.log("questionTime", questionTime);
-  console.log("isChillMode :>> ", isChillMode);
 
   return (
     <div className="flex flex-col gap-6 items-center text-neutral-700">
@@ -181,7 +185,7 @@ export default function CustomQuizSet({
               className={`bg-navy-default button-prm text-neutral-50 text-xl rounded-md pt-1 px-3
               cursor-pointer w-25 h-10 shadow-lg shadow-zinc-400 flex align-middle ${
                 pickedCategoryArray.some(
-                  (category) => category.title === cat.title
+                  (category: Category) => category.title === cat.title
                 )
                   ? "bg-navy-light button-prm-active"
                   : ""
@@ -220,9 +224,8 @@ export default function CustomQuizSet({
           {customCategoryArray.length > 0 && (
             <div className="flex flex-wrap gap-2 justify-center fade-in mt-3">
               {customCategoryArray.map((cat, index) => (
-                <div className="flex flex-row">
+                <div className="flex flex-row" key={index}>
                   <div
-                    key={index}
                     className="bg-navy-light button-prm-active text-neutral-50 text-xl rounded-md pl-3 pr-4 
       w-25 h-10 shadow-lg shadow-zinc-400 flex items-center relative my-auto"
                   >

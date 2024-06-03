@@ -53,12 +53,14 @@ export interface ScoreProviderProps {
 }
 
 export interface CustomQuizContextProps {
-  pickedCategoryKeyword: string | null;
-  setPickedCategoryKeyword: React.Dispatch<React.SetStateAction<string | null>>;
-  pickedCategoryTitle: string | null;
-  setPickedCategoryTitle: React.Dispatch<React.SetStateAction<string | null>>;
   isChillMode: boolean | null;
   setIsChillMode: React.Dispatch<React.SetStateAction<boolean | null>>;
+  pickedCategoryArray: Category[] | null;
+  setPickedCategoryArray: React.Dispatch<React.SetStateAction<Category[]>>;
+  questionAmount: number | null;
+  setQuestionAmount: React.Dispatch<React.SetStateAction<number>>;
+  questionTime: number | null;
+  setQuestionTime: React.Dispatch<React.SetStateAction<number>>;
 }
 export interface formattedQuestion {
   question: string;
