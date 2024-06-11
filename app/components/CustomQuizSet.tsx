@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Category, CustomQuizSetProps } from "../types";
 import { Box, Slider, useMediaQuery, useTheme } from "@mui/material";
 import { lightGreen } from "@mui/material/colors";
@@ -20,28 +20,23 @@ export default function CustomQuizSet({
   } = useContext(CustomQuizContext);
 
   const [customCategory, setCustomCategory] = useState<string>("");
-
   const [customCategoryArray, setCustomCategoryArray] = useState<Category[]>(
     []
   );
-
   const [customCategoryError, setCustomCategoryError] = useState<string>("");
-
   const [isInfo, setIsInfo] = useState(false);
+  const [sliderValues, setSliderValues] = useState({ amount: 10, time: 10 });
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.between("xs", "sm"));
   const isMediumScreen = useMediaQuery(theme.breakpoints.between("sm", "md"));
 
-  const screenWidth = () => {
-    if (isSmallScreen) {
-      return 250;
-    } else if (isMediumScreen) {
-      return 320;
-    } else {
-      return 400;
-    }
-  };
+  const screenWidth = isSmallScreen ? 250 : isMediumScreen ? 320 : 400;
+
+  useEffect(() => {
+    setQuestionAmount(sliderValues.amount);
+    setQuestionTime(sliderValues.time);
+  }, [sliderValues, setQuestionAmount, setQuestionTime]);
 
   const CategoryArray: Category[] = [
     {
@@ -57,10 +52,7 @@ export default function CustomQuizSet({
       title: "History",
       keyword: "history, famous historical figures and events",
     },
-    {
-      title: "Literature",
-      keyword: "literature, books and writers",
-    },
+    { title: "Literature", keyword: "literature, books and writers" },
     {
       title: "Sports",
       keyword:
@@ -77,10 +69,10 @@ export default function CustomQuizSet({
     },
   ];
 
-  function handleCustomCategoryClick() {
+  const handleCustomCategoryClick = () => {
     const trimmedCategory = customCategory.trim();
 
-    if (trimmedCategory == "") {
+    if (trimmedCategory === "") {
       setCustomCategoryError("Category cannot be empty.");
       return;
     }
@@ -123,47 +115,35 @@ export default function CustomQuizSet({
     ]);
     setCustomCategory("");
     setCustomCategoryError("");
-  }
-
-  const handleCategoryClick = (keyword: string, title: string) => {
-    const index = pickedCategoryArray.findIndex(
-      (category: Category) => category.title === title
-    );
-
-    if (index !== -1) {
-      setPickedCategoryArray((prevArray: Category[]) =>
-        prevArray.filter((category: Category) => category.title !== title)
-      );
-    } else {
-      const pickedCategory: Category = {
-        title: title,
-        keyword: keyword,
-      };
-      setPickedCategoryArray((prevArray: Category[]) => [
-        ...prevArray,
-        pickedCategory,
-      ]);
-    }
   };
 
-  function handleRemoveCustomCategory(title: string) {
+  const handleCategoryClick = (keyword: string, title: string) => {
+    setPickedCategoryArray((prevArray: Category[]) => {
+      const index = prevArray.findIndex(
+        (category: Category) => category.title === title
+      );
+      if (index !== -1) {
+        return prevArray.filter(
+          (category: Category) => category.title !== title
+        );
+      } else {
+        return [...prevArray, { title, keyword }];
+      }
+    });
+  };
+
+  const handleRemoveCustomCategory = (title: string) => {
     setPickedCategoryArray((prevArray: Category[]) =>
       prevArray.filter((category: Category) => category.title !== title)
     );
     setCustomCategoryArray((prevArray: Category[]) =>
       prevArray.filter((category: Category) => category.title !== title)
     );
-  }
+  };
 
-  function getAriaValueText(value: number, index: number) {
-    setQuestionAmount(`${value}`);
-    return `${value}`;
-  }
-
-  function getAriaValueText2(value: number, index: number) {
-    setQuestionTime(`${value}`);
-    return `${value}`;
-  }
+  const handleSliderChange = (type: "amount" | "time", value: number) => {
+    setSliderValues((prev) => ({ ...prev, [type]: value }));
+  };
 
   const handleChillModeClick = () => {
     setIsChillMode(!isChillMode);
@@ -182,8 +162,7 @@ export default function CustomQuizSet({
           {CategoryArray.map((cat, index) => (
             <div
               key={index}
-              className={`bg-navy-default button-prm text-neutral-50 text-xl rounded-md pt-1 px-3
-              cursor-pointer w-25 h-10 shadow-lg shadow-zinc-400 flex align-middle ${
+              className={`bg-navy-default button-prm text-neutral-50 text-xl rounded-md pt-1 px-3 cursor-pointer w-25 h-10 shadow-lg shadow-zinc-400 flex align-middle ${
                 pickedCategoryArray.some(
                   (category: Category) => category.title === cat.title
                 )
@@ -204,12 +183,10 @@ export default function CustomQuizSet({
                 type="text"
                 value={customCategory}
                 onChange={(e) => setCustomCategory(e.target.value)}
-                className="border-[3px] border-gray-default rounded-md pl-2 pr-9 accent-rose-500 outline-none
-              focus:border-black w-64 input-area"
+                className="border-[3px] border-gray-default rounded-md pl-2 pr-9 accent-rose-500 outline-none focus:border-black w-64 input-area"
               />
               <div
-                className="bg-green-default text-neutral-50 text-2xl rounded-r-[4px] border-l-[3px] border-gray-default
-          cursor-pointer hover:bg-green-light w-7 h-[28.5px] text-center relative right-[30.5px] input-button"
+                className="bg-green-default text-neutral-50 text-2xl rounded-r-[4px] border-l-[3px] border-gray-default cursor-pointer hover:bg-green-light w-7 h-[28.5px] text-center relative right-[30.5px] input-button"
                 onClick={handleCustomCategoryClick}
               >
                 &gt;
@@ -225,14 +202,10 @@ export default function CustomQuizSet({
             <div className="flex flex-wrap gap-2 justify-center fade-in mt-3">
               {customCategoryArray.map((cat, index) => (
                 <div className="flex flex-row" key={index}>
-                  <div
-                    className="bg-navy-light button-prm-active text-neutral-50 text-xl rounded-md pl-3 pr-4 
-      w-25 h-10 shadow-lg shadow-zinc-400 flex items-center relative my-auto"
-                  >
+                  <div className="bg-navy-light button-prm-active text-neutral-50 text-xl rounded-md pl-3 pr-4 w-25 h-10 shadow-lg shadow-zinc-400 flex items-center relative my-auto">
                     {cat.title}
                     <div
-                      className="absolute text-sm 
-    cursor-pointer text-cyan-800 right-1 top-0 hover:text-cyan-950"
+                      className="absolute text-sm cursor-pointer text-cyan-800 right-1 top-0 hover:text-cyan-950"
                       onClick={() => handleRemoveCustomCategory(cat.title)}
                     >
                       x
@@ -246,21 +219,15 @@ export default function CustomQuizSet({
         <div className="flex flex-col mt-4 gap-4">
           <p>3. How many questions do you want in your quiz?</p>
           <div>
-            <Box
-              sx={{
-                screenWidth,
-              }}
-            >
+            <Box sx={{ screenWidth }}>
               <Slider
-                sx={{
-                  color: lightGreen[700],
-                  width: screenWidth,
-                }}
+                sx={{ color: lightGreen[700], width: screenWidth }}
                 aria-label="Questions"
                 defaultValue={10}
-                getAriaValueText={getAriaValueText}
+                onChange={(e, value) =>
+                  handleSliderChange("amount", value as number)
+                }
                 valueLabelDisplay="auto"
-                shiftStep={30}
                 step={1}
                 marks
                 min={5}
@@ -272,21 +239,15 @@ export default function CustomQuizSet({
         <div className="flex flex-col gap-4">
           <p>4. How many seconds do you need for each question?</p>
           <div>
-            <Box
-              sx={{
-                screenWidth,
-              }}
-            >
+            <Box sx={{ screenWidth }}>
               <Slider
-                sx={{
-                  color: lightGreen[700],
-                  width: screenWidth,
-                }}
-                aria-label="Questions"
+                sx={{ color: lightGreen[700], width: screenWidth }}
+                aria-label="Time"
                 defaultValue={10}
-                getAriaValueText={getAriaValueText2}
+                onChange={(e, value) =>
+                  handleSliderChange("time", value as number)
+                }
                 valueLabelDisplay="auto"
-                shiftStep={30}
                 step={1}
                 marks
                 min={5}
