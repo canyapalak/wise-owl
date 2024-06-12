@@ -15,6 +15,10 @@ export interface EndlessQuizProps {
   closeEndlessQuiz: () => void;
 }
 
+export interface CustomQuizProps {
+  closeCustomQuiz: () => void;
+}
+
 export interface ContestProps {
   closeContest: () => void;
   openContestResult: () => void;
@@ -36,6 +40,7 @@ export interface CustomQuizSetProps {
 
 export interface CustomQuizReadyProps {
   closeCustomQuizReady: () => void;
+  openCustomQuiz: () => void;
 }
 export interface Category {
   title: string;
