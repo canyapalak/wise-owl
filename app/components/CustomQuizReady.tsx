@@ -27,7 +27,8 @@ export default function CustomQuizReady({
           {pickedCategoryArray.map((cat: Category, index: number) => (
             <div
               key={index}
-              className="bg-navy-default text-neutral-50 text-xl rounded-md pt-1 px-3 w-25 h-10 shadow-lg shadow-zinc-400 flex align-middle"
+              className="bg-navy-default text-neutral-50 text-xl rounded-md pt-1 px-3 w-25 h-10 
+              shadow-lg shadow-zinc-400 flex align-middle cursor-default"
             >
               {cat.title}
             </div>
@@ -41,11 +42,8 @@ export default function CustomQuizReady({
       </div>
 
       <div className="flex flex-row gap-2 text-xl">
-        <p>Question Time:</p>
-        <div className="flex flex-row gap-2">
-          <p className="text-mustard-default">{questionTime}</p>
-          <p>sec.</p>
-        </div>
+        <p>Question time in seconds:</p>
+        <p className="text-mustard-default">{questionTime}</p>
       </div>
 
       <div className="flex flex-row gap-2 text-xl">
