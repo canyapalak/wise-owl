@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Categories from "@/app/components/Categories";
 import EndlessQuiz from "@/app/components/EndlessQuiz";
 import Contest from "@/app/components/Contest";
@@ -7,8 +7,12 @@ import WelcomeButtons from "@/app/components/WelcomeButtons";
 import ContestInfo from "@/app/components/ContestInfo";
 import ContestResult from "@/app/components/ContestResult";
 import CustomQuizSet from "@/app/components/CustomQuizSet";
+import CustomQuizReady from "@/app/components/CustomQuizReady";
+import { CustomQuizContextProps } from "@/app/types";
+import { CustomQuizContext } from "@/app/context/CustomQuizContext";
 
 export default function Home() {
+  const { resetCustomQuizContext } = useContext(CustomQuizContext);
   const [isInfo, setIsInfo] = useState(false);
   const [isCategories, setIsCategories] = useState(false);
   const [isEndlessQuiz, setIsEndlessQuiz] = useState(false);
@@ -17,6 +21,7 @@ export default function Home() {
   const [isContestCategories, setIsContestCategories] = useState(false);
   const [isContestResult, setIsContestResult] = useState(false);
   const [isCustomQuizSet, setIsCustomQuizSet] = useState(false);
+  const [isCustomQuizReady, setIsCustomQuizReady] = useState(false);
 
   const openInfo = (): void => {
     setIsInfo(true);
@@ -78,6 +83,15 @@ export default function Home() {
     setIsCustomQuizSet(false);
   };
 
+  const openCustomQuizReady = (): void => {
+    setIsCustomQuizReady(true);
+  };
+
+  const closeCustomQuizReady = (): void => {
+    setIsCustomQuizReady(false);
+    setIsCustomQuizSet(true);
+  };
+
   console.log("isContestResult :>> ", isContestResult);
 
   return (
@@ -88,6 +102,7 @@ export default function Home() {
         !isContestInfo &&
         !isContest &&
         !isCustomQuizSet &&
+        !isCustomQuizReady &&
         !isEndlessQuiz && <Info closeInfo={closeInfo} />}
       {!isInfo &&
         !isContestResult &&
@@ -95,6 +110,7 @@ export default function Home() {
         !isContestInfo &&
         !isContest &&
         !isCustomQuizSet &&
+        !isCustomQuizReady &&
         isEndlessQuiz && <EndlessQuiz closeEndlessQuiz={closeEndlessQuiz} />}
       {!isInfo &&
         !isContestResult &&
@@ -102,6 +118,7 @@ export default function Home() {
         !isEndlessQuiz &&
         isContestInfo &&
         !isCustomQuizSet &&
+        !isCustomQuizReady &&
         !isContest && (
           <ContestInfo
             closeContestInfo={closeContestInfo}
@@ -114,6 +131,7 @@ export default function Home() {
         !isEndlessQuiz &&
         !isContestInfo &&
         !isCustomQuizSet &&
+        !isCustomQuizReady &&
         isContest && (
           <Contest
             closeContest={closeContest}
@@ -126,6 +144,7 @@ export default function Home() {
         !isContestInfo &&
         !isContest &&
         !isCustomQuizSet &&
+        !isCustomQuizReady &&
         !isEndlessQuiz && (
           <Categories
             closeCategories={closeCategories}
@@ -140,12 +159,14 @@ export default function Home() {
         !isContestInfo &&
         !isContest &&
         !isCustomQuizSet &&
+        !isCustomQuizReady &&
         !isEndlessQuiz && (
           <WelcomeButtons
             openCategories={openCategories}
             openInfo={openInfo}
             openContestInfo={openContestInfo}
             openCustomQuizSet={openCustomQuizSet}
+            resetCustomQuizContext={resetCustomQuizContext}
           />
         )}
       {!isInfo &&
@@ -154,8 +175,22 @@ export default function Home() {
         !isContestInfo &&
         !isContest &&
         !isContestResult &&
+        !isCustomQuizReady &&
         isCustomQuizSet && (
-          <CustomQuizSet closeCustomQuizSet={closeCustomQuizSet} />
+          <CustomQuizSet
+            closeCustomQuizSet={closeCustomQuizSet}
+            openCustomQuizReady={openCustomQuizReady}
+          />
+        )}
+      {!isInfo &&
+        !isCategories &&
+        !isEndlessQuiz &&
+        !isContestInfo &&
+        !isContest &&
+        !isContestResult &&
+        !isCustomQuizSet &&
+        isCustomQuizReady && (
+          <CustomQuizReady closeCustomQuizReady={closeCustomQuizReady} />
         )}
       {!isInfo &&
         !isCategories &&
@@ -163,6 +198,7 @@ export default function Home() {
         !isContestInfo &&
         !isContest &&
         !isCustomQuizSet &&
+        !isCustomQuizReady &&
         isContestResult && (
           <ContestResult closeContestResult={closeContestResult} />
         )}

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { WelcomeButtonsProps } from "../types";
 
 export default function WelcomeButtons({
@@ -5,7 +6,12 @@ export default function WelcomeButtons({
   openInfo,
   openContestInfo,
   openCustomQuizSet,
+  resetCustomQuizContext,
 }: WelcomeButtonsProps) {
+  useEffect(() => {
+    resetCustomQuizContext();
+  }, []);
+
   return (
     <>
       <div className="flex flex-col gap-4 items-center">

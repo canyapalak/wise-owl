@@ -3,6 +3,7 @@ export interface WelcomeButtonsProps {
   openInfo: () => void;
   openContestInfo: () => void;
   openCustomQuizSet: () => void;
+  resetCustomQuizContext: () => void;
 }
 export interface CategoriesProps {
   closeCategories: () => void;
@@ -30,6 +31,11 @@ export interface ContestResultProps {
 
 export interface CustomQuizSetProps {
   closeCustomQuizSet: () => void;
+  openCustomQuizReady: () => void;
+}
+
+export interface CustomQuizReadyProps {
+  closeCustomQuizReady: () => void;
 }
 export interface Category {
   title: string;
@@ -61,6 +67,7 @@ export interface CustomQuizContextProps {
   setQuestionAmount: React.Dispatch<React.SetStateAction<number>>;
   questionTime: number | null;
   setQuestionTime: React.Dispatch<React.SetStateAction<number>>;
+  resetCustomQuizContext: () => void;
 }
 export interface formattedQuestion {
   question: string;

@@ -16,6 +16,13 @@ export const CustomQuizProvider = ({ children }: { children: ReactNode }) => {
 
   const [questionTime, setQuestionTime] = useState<number>(10);
 
+  const resetCustomQuizContext = () => {
+    setPickedCategoryArray([]);
+    setIsChillMode(false);
+    setQuestionAmount(10);
+    setQuestionTime(10);
+  };
+
   const contextValue: CustomQuizContextProps = {
     isChillMode,
     setIsChillMode,
@@ -25,6 +32,7 @@ export const CustomQuizProvider = ({ children }: { children: ReactNode }) => {
     setQuestionAmount,
     questionTime,
     setQuestionTime,
+    resetCustomQuizContext,
   };
 
   return (

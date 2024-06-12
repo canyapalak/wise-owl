@@ -9,6 +9,7 @@ import { CustomQuizContext } from "../context/CustomQuizContext";
 
 export default function CustomQuizSet({
   closeCustomQuizSet,
+  openCustomQuizReady,
 }: CustomQuizSetProps) {
   const {
     setIsChillMode,
@@ -153,6 +154,15 @@ export default function CustomQuizSet({
     setIsInfo(!isInfo);
   };
 
+  const closeQuizSetOpenQuizReady = (): void => {
+    closeCustomQuizSet();
+    openCustomQuizReady();
+  };
+
+  console.log("pickedCategoryArray :>> ", pickedCategoryArray);
+  console.log("sliderValues :>> ", sliderValues);
+  console.log("isChillMode", isChillMode);
+
   return (
     <div className="flex flex-col gap-6 items-center text-neutral-700">
       <p className="text-center fade-in">It is time to create your own quiz!</p>
@@ -290,6 +300,7 @@ export default function CustomQuizSet({
           cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 ${
             pickedCategoryArray.length === 0 && "opacity-50 pointer-events-none"
           }`}
+          onClick={closeQuizSetOpenQuizReady}
         >
           Next
         </div>
