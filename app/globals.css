@@ -93,7 +93,8 @@ body {
 }
 
 .progress-moved .progress-bar {
-  animation: progressAnimation 10s linear;
+  animation-name: progressAnimation;
+  animation-timing-function: linear;
 }
 
 .input-area:focus-within+.input-button,

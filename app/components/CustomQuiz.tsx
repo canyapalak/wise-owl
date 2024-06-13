@@ -1,18 +1,17 @@
 import "@/app/globals.css";
 import { useContext, useEffect, useState } from "react";
-import { CategoryContext } from "../context/CategoryContext";
-import { CustomQuizProps, EndlessQuizProps, formattedQuestion } from "../types";
+import { Category, CustomQuizProps, formattedQuestion } from "../types";
 import Image from "next/image";
 import confused from "@/public/assets/confused.png";
 import { formatQuestion } from "../utils/formatQuestion";
 import Spinner from "./Spinner";
 import CountdownBar from "./CountdownBar";
 import { ScoreContext } from "../context/ScoreContext";
+import { CustomQuizContext } from "../context/CustomQuizContext";
 
 export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
-  const pickedCategoryKeyword = useContext(CategoryContext);
-  const pickedCategoryTitle = useContext(CategoryContext);
-  const { isChillMode } = useContext(CategoryContext);
+  const { isChillMode, pickedCategoryArray, questionAmount, questionTime } =
+    useContext(CustomQuizContext);
   const [generatedQuestion, setGeneratedQuestion] =
     useState<formattedQuestion | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -21,23 +20,13 @@ export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
   const [questionCount, setQuestionCount] = useState<number>(0);
   const { score, setScore } = useContext(ScoreContext);
   const [isTimeOut, setIsTimeOut] = useState<boolean>(false);
+  const [currentCategoryIndex, setCurrentCategoryIndex] = useState<number>(0);
   let timeout: NodeJS.Timeout;
 
   useEffect(() => {
     setScore(0);
     setIsCorrect(null);
     setQuestionCount(0);
-    const fetchData = async () => {
-      if (pickedCategoryKeyword) {
-        setLoading(true);
-        try {
-          await generateQuestion(pickedCategoryKeyword);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -47,11 +36,20 @@ export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
         setIsTimeOut(true);
         setIsCorrect(false);
         console.log("Time is out!");
-      }, 10000);
+      }, questionTime * 1000);
     }
 
     return () => clearTimeout(timeout);
-  }, [generatedQuestion?.question]);
+  }, [generatedQuestion?.question, questionTime]);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      await generateQuestion(pickedCategoryArray[currentCategoryIndex].keyword);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   console.log("loading :>> ", loading);
   console.log("selectedOption :>> ", selectedOption);
@@ -59,49 +57,53 @@ export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
   const handleOptionClick = (optValue: string) => {
     if (selectedOption === null && !isTimeOut) {
       setSelectedOption(optValue);
-      setIsCorrect(optValue === String(generatedQuestion?.correctOption));
-      setIsCorrect((prevIsCorrect) => {
-        const newIsCorrect =
-          optValue === String(generatedQuestion?.correctOption);
-        if (newIsCorrect) {
-          setScore(score + 1);
-        }
-        return newIsCorrect;
-      });
+      const correct = optValue === String(generatedQuestion?.correctOption);
+      setIsCorrect(correct);
+      if (correct) {
+        setScore(score + 1);
+      }
       clearTimeout(timeout);
     }
   };
 
   const handleNewQuestion = async () => {
-    setLoading(true);
-    setSelectedOption(null);
-    setIsTimeOut(false);
-    await generateQuestion(pickedCategoryKeyword);
-    if (
-      generatedQuestion &&
-      generatedQuestion?.question !== "AI is confused :/"
-    ) {
-      setQuestionCount(questionCount + 1);
+    if (questionCount < questionAmount) {
+      setLoading(true);
+      setSelectedOption(null);
+      setIsTimeOut(false);
+      const nextCategoryIndex =
+        (currentCategoryIndex + 1) % pickedCategoryArray.length;
+      setCurrentCategoryIndex(nextCategoryIndex);
+      await generateQuestion(pickedCategoryArray[nextCategoryIndex].keyword);
+      if (
+        generatedQuestion &&
+        generatedQuestion?.question !== "AI is confused :/"
+      ) {
+        setQuestionCount(questionCount + 1);
+      }
+      setLoading(false);
+    } else {
+      ("");
     }
-    setLoading(false);
   };
 
-  console.log(
-    "pickedCategoryKeyword",
-    pickedCategoryKeyword.pickedCategoryKeyword
-  );
-  console.log("pickedCategoryTitle", pickedCategoryTitle.pickedCategoryTitle);
+  console.log("pickedCategoryArray :>> ", pickedCategoryArray);
   console.log("isChillMode", isChillMode);
   console.log("isTimeOut", isTimeOut);
+  console.log("questionAmount :>> ", questionAmount);
+  console.log("questionTime", questionTime);
 
-  const generateQuestion = async (pickedCategoryObject: {
-    pickedCategoryKeyword: string;
-  }) => {
-    const pickedCategoryKeyword = pickedCategoryObject.pickedCategoryKeyword;
+  const generateQuestion = async (pickedCategoryKeyword: string) => {
     const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+    const allKeywords = pickedCategoryArray
+      .map((cat: Category) => cat.keyword)
+      .join(", ");
 
     const promptText = `You are an AI assistant that creates creative and interesting trivia questions according to certain rules and the sample given below.
-    You will generate a trivia question for each prompt about ${pickedCategoryKeyword} and give four options, and the correct answer after them.
+    You will generate a trivia question for each prompt about the following keyword or keywords, give four options, and the correct answer after them.
+    The keyword or keywords are:
+    ${allKeywords}
+
     One of the options should be the correct answer.The difficulty of the questions should be middle level, suitable for average adult knowledge.
     
     You will strictly follow these rules:
@@ -174,6 +176,7 @@ export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
   console.log("generatedQuestion :>> ", generatedQuestion);
   console.log("isCorrect", isCorrect);
   console.log("selectedOption :>> ", selectedOption);
+  console.log("score :>> ", score);
 
   return (
     <div className="flex flex-col gap-2 items-center">
@@ -182,37 +185,36 @@ export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
           className="bg-navy-default text-neutral-50 text-lg px-2 py-1
           text-center items-center category-tag"
         >
-          {pickedCategoryTitle.pickedCategoryTitle}
+          Custom
         </span>
       </div>
-      <div className="text-center flex flex-col">
-        {!loading && generatedQuestion?.question !== "AI is confused :/" && (
-          <div className="flex flex-col mb-2">
-            <div
-              className="text-lg px-2 py-1
+      <div className="text-center">
+        {!loading &&
+          generatedQuestion?.question !== "AI is confused :/" &&
+          questionCount !== questionAmount && (
+            <div className="flex flex-col mb-2">
+              <div
+                className="text-lg px-2 py-1
        text-center items-center fade-in text-mustard-default"
-            >
-              Question {questionCount + 1}
-            </div>
-            <div className="text-sm flex flex-row mb-2 justify-center">
-              (<p className="text-brick-default mr-1">{score}</p> correct{" "}
-              {score <= 1 ? "answer" : "answers"})
-            </div>
-            {!isChillMode &&
-            !loading &&
-            !selectedOption &&
-            !isTimeOut &&
-            generatedQuestion?.question !== "AI is confused :/" ? (
-              <div className="w-full sm:min-w-[300px] md:min-w-[395px] lg:min-w-[535px] xl:min-w-[700px] 2xl:min-w-[830px] mx-auto mb-4">
-                <CountdownBar />
+              >
+                Question {questionCount + 1}
               </div>
-            ) : null}
-          </div>
-        )}
+              {!isChillMode &&
+              !loading &&
+              !selectedOption &&
+              !isTimeOut &&
+              generatedQuestion?.question !== "AI is confused :/" ? (
+                <div className="w-full sm:min-w-[300px] md:min-w-[395px] lg:min-w-[535px] xl:min-w-[700px] 2xl:min-w-[830px] mx-auto mb-4">
+                  <CountdownBar />
+                </div>
+              ) : null}
+            </div>
+          )}
 
         {loading ? (
           <Spinner />
         ) : (
+          questionCount !== questionAmount &&
           generatedQuestion && (
             <div className="flex flex-wrap flex-col items-center fade-in px-2">
               <span className="">{generatedQuestion.question}</span>
@@ -242,12 +244,12 @@ export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
                     key={index}
                     className={`${
                       selectedOption === null && isCorrect === null
-                        ? "bg-mustard-default"
+                        ? "bg-mustard-default cursor-default"
                         : selectedOption === optValue
                         ? isCorrect
-                          ? "bg-green-default"
-                          : "bg-red-default"
-                        : "bg-mustard-default"
+                          ? "bg-green-default cursor-default"
+                          : "bg-red-default cursor-default"
+                        : "bg-mustard-default cursor-default"
                     } ${
                       selectedOption === null && !isTimeOut
                         ? "hover:bg-mustard-light"
@@ -277,15 +279,29 @@ export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
           )
         )}
       </div>
-      {!loading && generatedQuestion?.question === "AI is confused :/" && (
+      {!loading &&
+        questionCount !== questionAmount &&
+        generatedQuestion?.question === "AI is confused :/" && (
+          <div className="items-center flex flex-col justify-normal">
+            <Image
+              src={confused}
+              alt="confused"
+              className="w-24 mb-12 fade-in"
+            />
+            <button
+              className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
+              onClick={handleNewQuestion}
+            >
+              Retry
+            </button>
+          </div>
+        )}
+      {questionCount === questionAmount && (
         <div className="items-center flex flex-col justify-normal">
-          <Image src={confused} alt="confused" className="w-24 mb-12 fade-in" />
-          <button
-            className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
-            onClick={handleNewQuestion}
-          >
-            Retry
-          </button>
+          <p className="fade-in text-center">You have completed the quiz!</p>
+          <div className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6">
+            Show Result
+          </div>
         </div>
       )}
       <div

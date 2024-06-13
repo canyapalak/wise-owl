@@ -90,3 +90,7 @@ export interface SliderInterface {
   value: number | number[];
   activeThumb: number;
 }
+
+export interface CountdownBarProps {
+  questionTime?: number | null;
+}

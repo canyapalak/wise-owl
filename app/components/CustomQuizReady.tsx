@@ -23,7 +23,7 @@ export default function CustomQuizReady({
         ) : (
           <p>Categories:</p>
         )}
-        <div className="flex gap-2 justify-center fade-in">
+        <div className="flex gap-2 justify-center fade-in flex-wrap">
           {pickedCategoryArray.map((cat: Category, index: number) => (
             <div
               key={index}
