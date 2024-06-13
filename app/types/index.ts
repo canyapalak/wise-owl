@@ -17,6 +17,7 @@ export interface EndlessQuizProps {
 
 export interface CustomQuizProps {
   closeCustomQuiz: () => void;
+  openCustomQuizResult: () => void;
 }
 
 export interface ContestProps {
@@ -31,6 +32,9 @@ export interface ContestInfoProps {
 
 export interface ContestResultProps {
   closeContestResult: () => void;
+}
+export interface CustomQuizResultProps {
+  closeCustomQuizResult: () => void;
 }
 
 export interface CustomQuizSetProps {

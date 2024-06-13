@@ -10,6 +10,7 @@ import CustomQuizSet from "@/app/components/CustomQuizSet";
 import CustomQuizReady from "@/app/components/CustomQuizReady";
 import { CustomQuizContext } from "@/app/context/CustomQuizContext";
 import CustomQuiz from "@/app/components/CustomQuiz";
+import CustomQuizResult from "@/app/components/CustomQuizResult";
 
 export default function Home() {
   const { resetCustomQuizContext } = useContext(CustomQuizContext);
@@ -23,6 +24,7 @@ export default function Home() {
   const [isCustomQuizSet, setIsCustomQuizSet] = useState(false);
   const [isCustomQuizReady, setIsCustomQuizReady] = useState(false);
   const [isCustomQuiz, setIsCustomQuiz] = useState(false);
+  const [isCustomQuizResult, setIsCustomQuizResult] = useState(false);
 
   const openInfo = (): void => {
     setIsInfo(true);
@@ -77,11 +79,18 @@ export default function Home() {
 
   const openContestResult = (): void => {
     setIsContestResult(true);
-    console.log("isContestResult-func :>> ", isContestResult);
   };
 
   const closeContestResult = (): void => {
     setIsContestResult(false);
+  };
+
+  const openCustomQuizResult = (): void => {
+    setIsCustomQuizResult(true);
+  };
+
+  const closeCustomQuizResult = (): void => {
+    setIsCustomQuizResult(false);
   };
 
   const openCustomQuizSet = (): void => {
@@ -107,6 +116,7 @@ export default function Home() {
     <div className="text-2xl">
       {isInfo &&
         !isContestResult &&
+        !isCustomQuizResult &&
         !isCategories &&
         !isContestInfo &&
         !isContest &&
@@ -116,6 +126,7 @@ export default function Home() {
         !isEndlessQuiz && <Info closeInfo={closeInfo} />}
       {!isInfo &&
         !isContestResult &&
+        !isCustomQuizResult &&
         !isCategories &&
         !isContestInfo &&
         !isContest &&
@@ -125,15 +136,22 @@ export default function Home() {
         isEndlessQuiz && <EndlessQuiz closeEndlessQuiz={closeEndlessQuiz} />}
       {!isInfo &&
         !isContestResult &&
+        !isCustomQuizResult &&
         !isCategories &&
         !isContestInfo &&
         !isContest &&
         !isCustomQuizSet &&
         !isCustomQuizReady &&
         !isEndlessQuiz &&
-        isCustomQuiz && <CustomQuiz closeCustomQuiz={closeCustomQuiz} />}
+        isCustomQuiz && (
+          <CustomQuiz
+            closeCustomQuiz={closeCustomQuiz}
+            openCustomQuizResult={openCustomQuizResult}
+          />
+        )}
       {!isInfo &&
         !isContestResult &&
+        !isCustomQuizResult &&
         !isCategories &&
         !isEndlessQuiz &&
         isContestInfo &&
@@ -148,6 +166,7 @@ export default function Home() {
         )}
       {!isInfo &&
         !isContestResult &&
+        !isCustomQuizResult &&
         !isCategories &&
         !isEndlessQuiz &&
         !isContestInfo &&
@@ -162,6 +181,7 @@ export default function Home() {
         )}
       {!isInfo &&
         !isContestResult &&
+        !isCustomQuizResult &&
         isCategories &&
         !isContestInfo &&
         !isContest &&
@@ -178,6 +198,7 @@ export default function Home() {
         )}
       {!isInfo &&
         !isContestResult &&
+        !isCustomQuizResult &&
         !isCategories &&
         !isContestInfo &&
         !isContest &&
@@ -199,6 +220,7 @@ export default function Home() {
         !isContestInfo &&
         !isContest &&
         !isContestResult &&
+        !isCustomQuizResult &&
         !isCustomQuizReady &&
         !isCustomQuiz &&
         isCustomQuizSet && (
@@ -213,6 +235,7 @@ export default function Home() {
         !isContestInfo &&
         !isContest &&
         !isContestResult &&
+        !isCustomQuizResult &&
         !isCustomQuizSet &&
         !isCustomQuiz &&
         isCustomQuizReady && (
@@ -229,8 +252,21 @@ export default function Home() {
         !isCustomQuizSet &&
         !isCustomQuizReady &&
         !isCustomQuiz &&
+        !isCustomQuizResult &&
         isContestResult && (
           <ContestResult closeContestResult={closeContestResult} />
+        )}
+      {!isInfo &&
+        !isCategories &&
+        !isEndlessQuiz &&
+        !isContestInfo &&
+        !isContest &&
+        !isCustomQuizSet &&
+        !isCustomQuizReady &&
+        !isCustomQuiz &&
+        !isContestResult &&
+        isCustomQuizResult && (
+          <CustomQuizResult closeCustomQuizResult={closeCustomQuizResult} />
         )}
     </div>
   );

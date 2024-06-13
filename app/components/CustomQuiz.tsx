@@ -9,7 +9,10 @@ import CountdownBar from "./CountdownBar";
 import { ScoreContext } from "../context/ScoreContext";
 import { CustomQuizContext } from "../context/CustomQuizContext";
 
-export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
+export default function CustomQuiz({
+  closeCustomQuiz,
+  openCustomQuizResult,
+}: CustomQuizProps) {
   const { isChillMode, pickedCategoryArray, questionAmount, questionTime } =
     useContext(CustomQuizContext);
   const [generatedQuestion, setGeneratedQuestion] =
@@ -85,6 +88,11 @@ export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
     } else {
       ("");
     }
+  };
+
+  const handleShowCustomResultsClick = (): void => {
+    closeCustomQuiz();
+    openCustomQuizResult();
   };
 
   console.log("pickedCategoryArray :>> ", pickedCategoryArray);
@@ -299,7 +307,10 @@ export default function CustomQuiz({ closeCustomQuiz }: CustomQuizProps) {
       {questionCount === questionAmount && (
         <div className="items-center flex flex-col justify-normal">
           <p className="fade-in text-center">You have completed the quiz!</p>
-          <div className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6">
+          <div
+            className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400 mt-6"
+            onClick={handleShowCustomResultsClick}
+          >
             Show Result
           </div>
         </div>
