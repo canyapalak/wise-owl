@@ -187,7 +187,7 @@ export default function Contest({
         {!loading &&
           generatedQuestion?.question !== "AI is confused :/" &&
           questionCount !== 10 && (
-            <div className="mb-2">
+            <div className="flex flex-col mb-2">
               <div
                 className="text-lg px-2 py-1
        text-center mb-2 items-center fade-in text-mustard-default"
@@ -239,12 +239,12 @@ export default function Contest({
                     key={index}
                     className={`${
                       selectedOption === null && isCorrect === null
-                        ? "bg-mustard-default"
+                        ? "bg-mustard-default cursor-default"
                         : selectedOption === optValue
                         ? isCorrect
-                          ? "bg-green-default"
-                          : "bg-red-default"
-                        : "bg-mustard-default"
+                          ? "bg-green-default cursor-default"
+                          : "bg-red-default cursor-default"
+                        : "bg-mustard-default cursor-default"
                     } ${
                       selectedOption === null && !isTimeOut
                         ? "hover:bg-mustard-light"
@@ -283,12 +283,12 @@ export default function Contest({
               alt="confused"
               className="w-24 mb-12 fade-in"
             />
-            <div
+            <button
               className="button-prm bg-purple-default hover:bg-purple-light text-neutral-50 text-2xl rounded-md p-3 cursor-pointer w-48 text-center shadow-lg shadow-zinc-400"
               onClick={handleNewQuestion}
             >
               Retry
-            </div>
+            </button>
           </div>
         )}
       {questionCount === 10 && (
