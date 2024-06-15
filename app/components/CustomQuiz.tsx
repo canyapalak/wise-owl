@@ -38,7 +38,6 @@ export default function CustomQuiz({
       timeout = setTimeout(() => {
         setIsTimeOut(true);
         setIsCorrect(false);
-        console.log("Time is out!");
       }, questionTime * 1000);
     }
 
@@ -53,9 +52,6 @@ export default function CustomQuiz({
       setLoading(false);
     }
   };
-
-  console.log("loading :>> ", loading);
-  console.log("selectedOption :>> ", selectedOption);
 
   const handleOptionClick = (optValue: string) => {
     if (selectedOption === null && !isTimeOut) {
@@ -94,12 +90,6 @@ export default function CustomQuiz({
     closeCustomQuiz();
     openCustomQuizResult();
   };
-
-  console.log("pickedCategoryArray :>> ", pickedCategoryArray);
-  console.log("isChillMode", isChillMode);
-  console.log("isTimeOut", isTimeOut);
-  console.log("questionAmount :>> ", questionAmount);
-  console.log("questionTime", questionTime);
 
   const generateQuestion = async (pickedCategoryKeyword: string) => {
     const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
@@ -146,8 +136,6 @@ export default function CustomQuiz({
     
     Correct Answer: The Nile`;
 
-    console.log("promptText :>> ", promptText);
-
     const apiUrl = "https://api.openai.com/v1/chat/completions";
 
     const requestOptions = {
@@ -166,25 +154,16 @@ export default function CustomQuiz({
 
     try {
       const response = await fetch(apiUrl, requestOptions);
-      console.log("Response status:", response.status);
 
       const responseData = await response.json();
-      console.log("responseData :>> ", responseData);
       const questionContent = responseData.choices[0]?.message.content;
-      console.log("questionContent :>> ", questionContent);
       const formattedQuestion = formatQuestion(questionContent);
 
       setGeneratedQuestion(formattedQuestion);
     } catch (error) {
-      console.error("Error fetching data:", error);
       throw error;
     }
   };
-
-  console.log("generatedQuestion :>> ", generatedQuestion);
-  console.log("isCorrect", isCorrect);
-  console.log("selectedOption :>> ", selectedOption);
-  console.log("score :>> ", score);
 
   return (
     <div className="flex flex-col gap-2 items-center">

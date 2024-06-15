@@ -110,8 +110,6 @@ export default function Home() {
     setIsCustomQuizSet(false);
   };
 
-  console.log("isContestResult :>> ", isContestResult);
-
   return (
     <div className="text-2xl">
       {isInfo &&

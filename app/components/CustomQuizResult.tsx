@@ -123,8 +123,6 @@ export default function CustomQuizResult({
   const animalImage = getAnimalImage(score);
   const resultText = getResultText(score);
 
-  console.log("questionAmount", questionAmount);
-
   return (
     <div className="gap-8 items-center flex flex-col fade-in-long">
       <div className="flex-col flex items-center">

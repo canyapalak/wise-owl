@@ -159,10 +159,6 @@ export default function CustomQuizSet({
     openCustomQuizReady();
   };
 
-  console.log("pickedCategoryArray :>> ", pickedCategoryArray);
-  console.log("sliderValues :>> ", sliderValues);
-  console.log("isChillMode", isChillMode);
-
   return (
     <div className="flex flex-col gap-6 items-center text-neutral-700">
       <p className="text-center fade-in">It is time to create your own quiz!</p>

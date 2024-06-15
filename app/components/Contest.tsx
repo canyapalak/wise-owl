@@ -49,14 +49,11 @@ export default function Contest({
       timeout = setTimeout(() => {
         setIsTimeOut(true);
         setIsCorrect(false);
-        console.log("Time is out!");
       }, 10000);
     }
 
     return () => clearTimeout(timeout);
   }, [generatedQuestion?.question]);
-
-  console.log("loading :>> ", loading);
 
   const handleOptionClick = (optValue: string) => {
     if (selectedOption === null && !isTimeOut) {
@@ -72,8 +69,6 @@ export default function Contest({
       clearTimeout(timeout);
     }
   };
-
-  console.log("score :>> ", score);
 
   const handleNewQuestion = async () => {
     if (questionCount < 10) {
@@ -97,15 +92,6 @@ export default function Contest({
     closeContest();
     openContestResult();
   };
-
-  console.log(
-    "pickedCategoryKeyword",
-    pickedCategoryKeyword.pickedCategoryKeyword
-  );
-  console.log("pickedCategoryTitle", pickedCategoryTitle.pickedCategoryTitle);
-  console.log("questionCount", questionCount);
-  console.log("isChillMode", isChillMode);
-  console.log("isTimeOut", isTimeOut);
 
   const generateQuestion = async (pickedCategoryObject: {
     pickedCategoryKeyword: string;
@@ -134,8 +120,6 @@ export default function Contest({
     
     Correct Answer: The Nile`;
 
-    console.log("promptText :>> ", promptText);
-
     const apiUrl = "https://api.openai.com/v1/chat/completions";
 
     const requestOptions = {
@@ -154,24 +138,16 @@ export default function Contest({
 
     try {
       const response = await fetch(apiUrl, requestOptions);
-      console.log("Response status:", response.status);
 
       const responseData = await response.json();
-      console.log("responseData :>> ", responseData);
       const questionContent = responseData.choices[0]?.message.content;
-      console.log("questionContent :>> ", questionContent);
       const formattedQuestion = formatQuestion(questionContent);
 
       setGeneratedQuestion(formattedQuestion);
     } catch (error) {
-      console.error("Error fetching data:", error);
       throw error;
     }
   };
-
-  console.log("generatedQuestion :>> ", generatedQuestion);
-  console.log("isCorrect", isCorrect);
-  console.log("selectedOption :>> ", selectedOption);
 
   return (
     <div className="flex flex-col gap-2 items-center">

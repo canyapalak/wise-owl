@@ -32,10 +32,6 @@ export function formatQuestion(generatedQuestion: string): formattedQuestion {
       ? generatedQuestion.slice(correctAnswerIndex + 15).trim()
       : "";
 
-  console.log("question", question);
-  console.log("optionA :>> ", optionA);
-  console.log("correctOption", correctOption);
-
   const options = [optionA, optionB, optionC, optionD];
 
   if (

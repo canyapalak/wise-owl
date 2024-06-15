@@ -36,10 +36,6 @@ export default function Categories({
     setIsInfo(!isInfo);
   };
 
-  console.log("isContestCategories", isContestCategories);
-  console.log("isChillMode :>> ", isChillMode);
-  console.log("clickedCategoryButton :>> ", clickedCategoryButton);
-
   const CategoryArray: Category[] = [
     {
       title: "Cinema",
