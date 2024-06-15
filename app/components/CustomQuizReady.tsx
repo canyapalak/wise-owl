@@ -42,7 +42,7 @@ export default function CustomQuizReady({
       </div>
 
       <div className="flex flex-row gap-2 text-xl">
-        <p>Question time in seconds:</p>
+        <p>Question time in sec.:</p>
         <p className="text-mustard-default">{questionTime}</p>
       </div>
 
